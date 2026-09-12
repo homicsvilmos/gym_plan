@@ -101,6 +101,18 @@ export const translations = {
     renamed: 'Átnevezve',
     original: 'Eredeti',
     
+    // Auth
+    login: 'Belépés',
+    logout: 'Kijelentkezés',
+    register: 'Regisztráció',
+    username: 'Felhasználónév',
+    password: 'Jelszó',
+    adminPanel: 'Admin Panel',
+    adminRights: 'Admin jogosultság',
+    users: 'Felhasználók',
+    createUser: 'Új felhasználó',
+    deleteUser: 'Törlés',
+    
     // BMI
     underweight: 'Sovány',
     normal: 'Normál',
@@ -208,6 +220,18 @@ export const translations = {
     reset: 'Reset',
     renamed: 'Renamed',
     original: 'Original',
+    
+    // Auth
+    login: 'Login',
+    logout: 'Logout',
+    register: 'Register',
+    username: 'Username',
+    password: 'Password',
+    adminPanel: 'Admin Panel',
+    adminRights: 'Admin rights',
+    users: 'Users',
+    createUser: 'New user',
+    deleteUser: 'Delete',
     
     // BMI
     underweight: 'Underweight',
