@@ -48,7 +48,7 @@ const exerciseDatabase = {
 const workoutTemplates = {
   // 1 nap: Teljes test
   fullBody1Day: {
-    name: 'Teljes Test',
+    name: 'Teljes test nap',
     exercises: [
       'bench-press', 'squat', 'barbell-row', 'overhead-press',
       'leg-curl', 'barbell-curl', 'tricep-pushdown', 'plank'
@@ -58,11 +58,11 @@ const workoutTemplates = {
   // 2 nap: A/B Teljes test
   fullBody2Day: {
     dayA: {
-      name: 'A nap',
+      name: 'Mell, Láb és Hát nap',
       exercises: ['bench-press', 'squat', 'barbell-row', 'lateral-raise', 'plank']
     },
     dayB: {
-      name: 'B nap',
+      name: 'Váll, Comb és Hát nap',
       exercises: ['overhead-press', 'romanian-deadlift', 'pull-ups', 'barbell-curl', 'crunches']
     }
   },
@@ -70,15 +70,15 @@ const workoutTemplates = {
   // 3 nap: Full Body (8.1 pont - legjobb 3 napos)
   fullBody3Day: {
     dayA: {
-      name: 'A nap',
+      name: 'Mell, Láb és Hát nap',
       exercises: ['bench-press', 'squat', 'barbell-row', 'lateral-raise', 'barbell-curl']
     },
     dayB: {
-      name: 'B nap',
+      name: 'Váll, Comb és Hát nap',
       exercises: ['overhead-press', 'romanian-deadlift', 'pull-ups', 'tricep-pushdown', 'plank']
     },
     dayC: {
-      name: 'C nap',
+      name: 'Mell, Láb és Hát nap',
       exercises: ['incline-bench', 'leg-press', 'seated-row', 'front-raise', 'hammer-curl']
     }
   },
@@ -86,15 +86,15 @@ const workoutTemplates = {
   // 3 nap: Push/Pull/Legs (6.7 pont)
   ppl3Day: {
     push: {
-      name: 'Push (Toló)',
+      name: 'Mell, Váll és Tricepsz nap',
       exercises: ['bench-press', 'overhead-press', 'incline-bench', 'lateral-raise', 'tricep-pushdown']
     },
     pull: {
-      name: 'Pull (Húzó)',
+      name: 'Hát és Bicepsz nap',
       exercises: ['pull-ups', 'barbell-row', 'lat-pulldown', 'face-pull', 'barbell-curl']
     },
     legs: {
-      name: 'Lábak',
+      name: 'Láb és Vádli nap',
       exercises: ['squat', 'romanian-deadlift', 'leg-press', 'leg-curl', 'calf-raise']
     }
   },
@@ -102,19 +102,19 @@ const workoutTemplates = {
   // 4 nap: Upper/Lower (8.4 pont)
   upperLower4Day: {
     upperA: {
-      name: 'Felsőtest A',
+      name: 'Mell, Hát és Kar nap',
       exercises: ['bench-press', 'barbell-row', 'overhead-press', 'lat-pulldown', 'barbell-curl', 'tricep-pushdown']
     },
     lowerA: {
-      name: 'Alsótest A',
+      name: 'Láb és Törzs nap',
       exercises: ['squat', 'romanian-deadlift', 'leg-press', 'leg-curl', 'calf-raise', 'plank']
     },
     upperB: {
-      name: 'Felsőtest B',
+      name: 'Mell, Hát és Kar nap',
       exercises: ['incline-bench', 'seated-row', 'lateral-raise', 'pull-ups', 'hammer-curl', 'skull-crusher']
     },
     lowerB: {
-      name: 'Alsótest B',
+      name: 'Láb és Törzs nap',
       exercises: ['squat', 'leg-curl', 'leg-extension', 'calf-raise', 'leg-raise', 'russian-twist']
     }
   },
@@ -122,23 +122,23 @@ const workoutTemplates = {
   // 5 nap: Upper/Lower/PPL (9.0 pont)
   ulppl5Day: {
     upper: {
-      name: 'Felsőtest',
+      name: 'Mell, Hát és Kar nap',
       exercises: ['bench-press', 'barbell-row', 'overhead-press', 'lat-pulldown', 'barbell-curl', 'tricep-pushdown']
     },
     lower: {
-      name: 'Alsótest',
+      name: 'Láb és Törzs nap',
       exercises: ['squat', 'romanian-deadlift', 'leg-press', 'leg-curl', 'calf-raise', 'plank']
     },
     push: {
-      name: 'Push (Toló)',
+      name: 'Mell, Váll és Tricepsz nap',
       exercises: ['incline-bench', 'lateral-raise', 'cable-crossover', 'front-raise', 'skull-crusher']
     },
     pull: {
-      name: 'Pull (Húzó)',
+      name: 'Hát és Bicepsz nap',
       exercises: ['pull-ups', 'seated-row', 'face-pull', 'hammer-curl', 'reverse-fly']
     },
     legs: {
-      name: 'Lábak',
+      name: 'Láb és Vádli nap',
       exercises: ['squat', 'leg-extension', 'leg-curl', 'calf-raise', 'leg-raise']
     }
   },
@@ -146,23 +146,23 @@ const workoutTemplates = {
   // 5 nap: Full Body (10.0 pont - LEGJOBB!)
   fullBody5Day: {
     dayA: {
-      name: 'A nap',
+      name: 'Mell, Láb és Hát nap',
       exercises: ['bench-press', 'squat', 'barbell-row', 'lateral-raise', 'barbell-curl']
     },
     dayB: {
-      name: 'B nap',
+      name: 'Váll, Comb és Hát nap',
       exercises: ['overhead-press', 'romanian-deadlift', 'pull-ups', 'tricep-pushdown', 'plank']
     },
     dayC: {
-      name: 'C nap',
+      name: 'Mell, Láb és Hát nap',
       exercises: ['incline-bench', 'leg-press', 'seated-row', 'front-raise', 'hammer-curl']
     },
     dayD: {
-      name: 'D nap',
+      name: 'Mell, Comb és Hát nap',
       exercises: ['bench-press', 'leg-curl', 'lat-pulldown', 'lateral-raise', 'skull-crusher']
     },
     dayE: {
-      name: 'E nap',
+      name: 'Váll, Láb és Hát nap',
       exercises: ['overhead-press', 'squat', 'barbell-row', 'cable-crossover', 'barbell-curl']
     }
   },
@@ -170,27 +170,27 @@ const workoutTemplates = {
   // 6 nap: PPL x2 (9.7 pont)
   ppl6Day: {
     push1: {
-      name: 'Push A (Toló)',
+      name: 'Mell, Váll és Tricepsz nap',
       exercises: ['bench-press', 'overhead-press', 'incline-bench', 'lateral-raise', 'tricep-pushdown']
     },
     pull1: {
-      name: 'Pull A (Húzó)',
+      name: 'Hát és Bicepsz nap',
       exercises: ['pull-ups', 'barbell-row', 'lat-pulldown', 'face-pull', 'barbell-curl']
     },
     legs1: {
-      name: 'Lábak A',
+      name: 'Láb és Vádli nap',
       exercises: ['squat', 'romanian-deadlift', 'leg-press', 'leg-curl', 'calf-raise']
     },
     push2: {
-      name: 'Push B (Toló)',
+      name: 'Mell, Váll és Tricepsz nap',
       exercises: ['incline-bench', 'lateral-raise', 'cable-crossover', 'front-raise', 'skull-crusher']
     },
     pull2: {
-      name: 'Pull B (Húzó)',
+      name: 'Hát és Bicepsz nap',
       exercises: ['seated-row', 'pull-ups', 'reverse-fly', 'hammer-curl', 'face-pull']
     },
     legs2: {
-      name: 'Lábak B',
+      name: 'Láb és Vádli nap',
       exercises: ['squat', 'leg-extension', 'leg-curl', 'calf-raise', 'leg-raise']
     }
   }

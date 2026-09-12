@@ -109,30 +109,6 @@ export default function WorkoutPlanView({ days, planGenerated, profile, onGenera
         </button>
       </div>
 
-      {/* Tudományos háttérinformáció */}
-      {planName && (
-        <div className="glass-subtle rounded-xl p-3 sm:p-4 border border-blue-500/20">
-          <div className="flex items-start gap-2">
-            <svg className="w-5 h-5 text-blue-400 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-            </svg>
-            <div className="text-xs sm:text-sm text-white/70">
-              {lang === 'hu' ? (
-                <>
-                  <p className="font-medium text-blue-300 mb-1">Tudományosan megalapozott edzésterv</p>
-                  <p>Ez az edzésterv a legfrissebb kutatásokon alapul (Eric Trexler PhD, Built With Science). Az optimális hipertrofia score elérése érdekében a frekvencia és a volumen tökéletes egyensúlyára törekszik.</p>
-                </>
-              ) : (
-                <>
-                  <p className="font-medium text-blue-300 mb-1">Science-based workout plan</p>
-                  <p>This workout plan is based on the latest research (Eric Trexler PhD, Built With Science). It aims for the perfect balance of frequency and volume to achieve optimal hypertrophy score.</p>
-                </>
-              )}
-            </div>
-          </div>
-        </div>
-      )}
-
       {days.map((day, index) => (
         <div key={day.id} className="glass-strong rounded-2xl overflow-hidden stagger-item hover-lift" style={{ animationDelay: `${index * 0.08}s` }}>
           {/* Day Header */}
@@ -255,6 +231,30 @@ export default function WorkoutPlanView({ days, planGenerated, profile, onGenera
           )}
         </div>
       ))}
+
+      {/* Tudományos háttérinformáció */}
+      {planName && (
+        <div className="glass-subtle rounded-xl p-3 sm:p-4 border border-blue-500/20 mt-4">
+          <div className="flex items-start gap-2">
+            <svg className="w-5 h-5 text-blue-400 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            <div className="text-xs sm:text-sm text-white/70">
+              {lang === 'hu' ? (
+                <>
+                  <p className="font-medium text-blue-300 mb-1">Tudományosan megalapozott edzésterv</p>
+                  <p>Ez az edzésterv a legfrissebb kutatásokon alapul (Eric Trexler PhD, Built With Science). Az optimális hipertrofia score elérése érdekében a frekvencia és a volumen tökéletes egyensúlyára törekszik.</p>
+                </>
+              ) : (
+                <>
+                  <p className="font-medium text-blue-300 mb-1">Science-based workout plan</p>
+                  <p>This workout plan is based on the latest research (Eric Trexler PhD, Built With Science). It aims for the perfect balance of frequency and volume to achieve optimal hypertrophy score.</p>
+                </>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
