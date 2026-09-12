@@ -204,7 +204,7 @@ function App() {
       {/* Content */}
       <div className="relative z-10 min-h-screen flex flex-col">
         {/* Header */}
-        <header className="glass-strong sticky top-0 z-50 safe-area-top">
+        <header className="sticky top-0 z-50 safe-area-top" style={{ background: 'rgba(10, 10, 10, 0.85)', backdropFilter: 'blur(40px) saturate(200%)', WebkitBackdropFilter: 'blur(40px) saturate(200%)', borderBottom: '1px solid rgba(255,255,255,0.08)' }}>
           <div className="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
             {/* Left: Hamburger Menu */}
             <div className="relative">
@@ -221,7 +221,7 @@ function App() {
               {showMenu && (
                 <>
                   <div className="fixed inset-0 z-40" onClick={() => setShowMenu(false)} />
-                  <div className="absolute top-12 left-0 glass-strong rounded-2xl p-2 min-w-[200px] z-50 shadow-2xl">
+                  <div className="absolute top-12 left-0 rounded-2xl p-2 min-w-[200px] z-50 shadow-2xl" style={{ background: 'rgba(10, 10, 10, 0.9)', backdropFilter: 'blur(40px) saturate(200%)', WebkitBackdropFilter: 'blur(40px) saturate(200%)', border: '1px solid rgba(255,255,255,0.1)' }}>
                     <button
                       onClick={() => { setMainView('workout'); setShowMenu(false); }}
                       className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-left transition-all ${
@@ -280,7 +280,7 @@ function App() {
               {showProfile && (
                 <>
                   <div className="fixed inset-0 z-40" onClick={() => setShowProfile(false)} />
-                  <div className="absolute top-12 right-0 glass-strong rounded-2xl p-4 min-w-[240px] z-50 shadow-2xl">
+                  <div className="absolute top-12 right-0 rounded-2xl p-4 min-w-[240px] z-50 shadow-2xl" style={{ background: 'rgba(10, 10, 10, 0.9)', backdropFilter: 'blur(40px) saturate(200%)', WebkitBackdropFilter: 'blur(40px) saturate(200%)', border: '1px solid rgba(255,255,255,0.1)' }}>
                     {profile ? (
                       <>
                         <div className="text-center mb-3 pb-3 border-b border-white/10">
