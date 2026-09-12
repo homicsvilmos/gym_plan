@@ -95,6 +95,12 @@ export const translations = {
     autoEasy: '⬆️ Könnyű volt (+12.5%)',
     autoHard: '⬇️ Nehéz volt (-10%)',
     
+    // Equipment actions
+    rename: 'Átnevezés',
+    reset: 'Visszaállítás',
+    renamed: 'Átnevezve',
+    original: 'Eredeti',
+    
     // BMI
     underweight: 'Sovány',
     normal: 'Normál',
@@ -196,6 +202,12 @@ export const translations = {
     set: 'Set',
     autoEasy: '⬆️ Was easy (+12.5%)',
     autoHard: '⬇️ Was hard (-10%)',
+    
+    // Equipment actions
+    rename: 'Rename',
+    reset: 'Reset',
+    renamed: 'Renamed',
+    original: 'Original',
     
     // BMI
     underweight: 'Underweight',

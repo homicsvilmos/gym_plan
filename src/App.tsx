@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { UserProfile, WorkoutDay, GymMachine } from './types';
-import { generateWorkoutPlan, calibrateWeightEasy, calibrateWeightHard, getBMICategory } from './workoutGenerator';
+import { generateWorkoutPlan, calibrateWeightEasy, calibrateWeightHard, getBMICategory, exerciseToMachineMap } from './workoutGenerator';
 import { t, getSystemLanguage, TranslationKey } from './i18n';
 import ProfileSetup from './components/ProfileSetup';
 import WorkoutPlanView from './components/WorkoutPlanView';
@@ -142,10 +142,39 @@ function App() {
     const updated = [...equipment, item];
     setEquipment(updated);
     localStorage.setItem('gymEquipment', JSON.stringify(updated));
+
+    // Auto-assign machine to exercises in workout plan
+    if (workoutDays.length > 0) {
+      const updatedDays = workoutDays.map(day => ({
+        ...day,
+        exercises: day.exercises.map(exercise => {
+          // If this exercise matches the machine mapping and doesn't have equipment assigned yet
+          const mappedMachineId = exerciseToMachineMap[exercise.id];
+          if (mappedMachineId === item.id && !exercise.assignedEquipment) {
+            return { ...exercise, assignedEquipment: item.id };
+          }
+          return exercise;
+        }),
+      }));
+      setWorkoutDays(updatedDays);
+      localStorage.setItem('gymWorkoutPlan', JSON.stringify(updatedDays));
+    }
   };
 
   const handleRemoveEquipment = (id: string) => {
     const updated = equipment.filter(e => e.id !== id);
+    setEquipment(updated);
+    localStorage.setItem('gymEquipment', JSON.stringify(updated));
+  };
+
+  const handleRenameEquipment = (id: string, newName: string) => {
+    const updated = equipment.map(e => e.id === id ? { ...e, name: newName } : e);
+    setEquipment(updated);
+    localStorage.setItem('gymEquipment', JSON.stringify(updated));
+  };
+
+  const handleResetEquipmentName = (id: string) => {
+    const updated = equipment.map(e => e.id === id ? { ...e, name: e.originalName || e.name } : e);
     setEquipment(updated);
     localStorage.setItem('gymEquipment', JSON.stringify(updated));
   };
@@ -238,6 +267,8 @@ function App() {
             equipment={equipment}
             onAdd={handleAddEquipment}
             onRemove={handleRemoveEquipment}
+            onRename={handleRenameEquipment}
+            onResetName={handleResetEquipmentName}
             lang={lang}
           />
         )}

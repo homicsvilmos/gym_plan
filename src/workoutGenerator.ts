@@ -241,3 +241,32 @@ export const defaultGymMachines = [
   { id: 'default-pull-up-bar', name: 'Húdzódkodó rúd', muscleGroup: 'Hát', isDefault: true, isCustom: false },
   { id: 'default-dip-bar', name: 'Tolódzkodó korlát', muscleGroup: 'Mell', isDefault: true, isCustom: false },
 ];
+
+// Mapping exercises to their default machines for auto-assignment
+export const exerciseToMachineMap: Record<string, string> = {
+  'bench-press': 'default-bench',
+  'incline-press': 'default-incline-bench',
+  'chest-fly': 'default-chest-fly-machine',
+  'cable-crossover': 'default-cable-crossover',
+  'deadlift': 'default-barbell-rack',
+  'lat-pulldown': 'default-lat-pulldown',
+  'barbell-row': 'default-barbell-rack',
+  'seated-row': 'default-seated-row',
+  'squat': 'default-squat-rack',
+  'leg-press': 'default-leg-press',
+  'leg-curl': 'default-leg-curl',
+  'leg-extension': 'default-leg-extension',
+  'calf-raise': 'default-calf-machine',
+  'overhead-press': 'default-shoulder-press',
+  'lateral-raise': 'default-dumbbell-rack',
+  'front-raise': 'default-dumbbell-rack',
+  'face-pull': 'default-cable-machine',
+  'bicep-curl': 'default-bicep-machine',
+  'hammer-curl': 'default-dumbbell-rack',
+  'tricep-pushdown': 'default-tricep-machine',
+  'skull-crusher': 'default-bench',
+  'plank': '',
+  'crunch': 'default-ab-machine',
+  'leg-raise': '',
+  'russian-twist': 'default-dumbbell-rack',
+};

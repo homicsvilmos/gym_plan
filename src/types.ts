@@ -41,6 +41,7 @@ export interface WorkoutPlan {
 export interface GymMachine {
   id: string;
   name: string;
+  originalName: string;
   imageUrl: string;
   muscleGroup: string;
   isDefault: boolean;
