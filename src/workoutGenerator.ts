@@ -1,6 +1,6 @@
 import { Exercise, WorkoutDay, UserProfile } from './types';
 
-const exerciseDatabase: Record<string, Omit<Exercise, 'weight' | 'isEasy'>[]> = {
+const exerciseDatabase: Record<string, Omit<Exercise, 'weight' | 'isEasy' | 'isHard'>[]> = {
   chest: [
     { id: 'bench-press', name: 'Fekvenyomás', muscleGroup: 'Mell', sets: 4, reps: 10, notes: '' },
     { id: 'incline-press', name: 'Ferdeknyomás', muscleGroup: 'Mell', sets: 3, reps: 12, notes: '' },
@@ -41,7 +41,8 @@ const exerciseDatabase: Record<string, Omit<Exercise, 'weight' | 'isEasy'>[]> = 
 };
 
 function calculateBaseWeight(exerciseId: string, profile: UserProfile): number {
-  const weightFactor = profile.weight * 0.4;
+  const weight = typeof profile.weight === 'number' ? profile.weight : 75;
+  const weightFactor = weight * 0.4;
   
   const multipliers: Record<string, number> = {
     'bench-press': 0.6,
@@ -72,44 +73,66 @@ function calculateBaseWeight(exerciseId: string, profile: UserProfile): number {
   };
 
   const multiplier = multipliers[exerciseId] || 0.3;
-  let weight = Math.round(weightFactor * multiplier);
+  let calculated = Math.round(weightFactor * multiplier);
   
   // Fitness level adjustment
-  if (profile.fitnessLevel === 'beginner') weight = Math.round(weight * 0.7);
-  else if (profile.fitnessLevel === 'advanced') weight = Math.round(weight * 1.3);
+  if (profile.fitnessLevel === 'beginner') calculated = Math.round(calculated * 0.7);
+  else if (profile.fitnessLevel === 'advanced') calculated = Math.round(calculated * 1.3);
 
   // Round to nearest 2.5kg
-  weight = Math.round(weight / 2.5) * 2.5;
-  if (weight < 5 && exerciseId !== 'plank' && exerciseId !== 'crunch' && exerciseId !== 'leg-raise') weight = 5;
+  calculated = Math.round(calculated / 2.5) * 2.5;
+  if (calculated < 5 && exerciseId !== 'plank' && exerciseId !== 'crunch' && exerciseId !== 'leg-raise') calculated = 5;
   
-  return weight;
+  return calculated;
 }
 
 export function generateWorkoutPlan(profile: UserProfile): WorkoutDay[] {
   const days: WorkoutDay[] = [];
+  const daysPerWeek = profile.daysPerWeek || 3;
   
-  const splitOptions: Record<string, { name: string; groups: string[] }[]> = {
-    beginner: [
+  // Determine split based on days per week and fitness level
+  let split: { name: string; groups: string[] }[];
+  
+  if (daysPerWeek <= 2) {
+    split = [
       { name: 'A - Teljes test', groups: ['chest', 'back', 'legs', 'shoulders', 'core'] },
       { name: 'B - Teljes test', groups: ['back', 'legs', 'chest', 'arms', 'core'] },
-      { name: 'C - Teljes test', groups: ['legs', 'shoulders', 'back', 'arms', 'core'] },
-    ],
-    intermediate: [
+    ];
+  } else if (daysPerWeek === 3) {
+    split = [
       { name: 'Hétfő - Mell + Tricepsz', groups: ['chest', 'arms'] },
       { name: 'Szerda - Hát + Bicepsz', groups: ['back', 'arms'] },
       { name: 'Péntek - Láb + Váll', groups: ['legs', 'shoulders'] },
-    ],
-    advanced: [
+    ];
+  } else if (daysPerWeek === 4) {
+    split = [
+      { name: 'Hétfő - Mell + Váll', groups: ['chest', 'shoulders'] },
+      { name: 'Kedd - Hát + Kar', groups: ['back', 'arms'] },
+      { name: 'Csütörtök - Láb', groups: ['legs', 'core'] },
+      { name: 'Péntek - Felsőtest', groups: ['chest', 'back', 'arms'] },
+    ];
+  } else if (daysPerWeek === 5) {
+    split = [
       { name: 'Hétfő - Mell', groups: ['chest', 'core'] },
       { name: 'Kedd - Hát', groups: ['back'] },
       { name: 'Szerda - Láb', groups: ['legs', 'core'] },
       { name: 'Csütörtök - Váll', groups: ['shoulders'] },
       { name: 'Péntek - Kar', groups: ['arms', 'core'] },
-    ],
-  };
+    ];
+  } else {
+    // 6 days - PPL x2
+    split = [
+      { name: 'Hétfő - Toló (Mell, Váll, Tricepsz)', groups: ['chest', 'shoulders', 'arms'] },
+      { name: 'Kedd - Húzó (Hát, Bicepsz)', groups: ['back', 'arms'] },
+      { name: 'Szerda - Láb', groups: ['legs', 'core'] },
+      { name: 'Csütörtök - Toló', groups: ['chest', 'shoulders', 'arms'] },
+      { name: 'Péntek - Húzó', groups: ['back', 'arms'] },
+      { name: 'Szombat - Láb + Törzs', groups: ['legs', 'core'] },
+    ];
+  }
 
-  const split = splitOptions[profile.fitnessLevel] || splitOptions.intermediate;
-  const dayNames = ['Hétfő', 'Kedd', 'Szerda', 'Csütörtök', 'Péntek', 'Szombat', 'Vasárnap'];
+  // Limit to daysPerWeek
+  split = split.slice(0, daysPerWeek);
 
   split.forEach((daySplit, index) => {
     const exercises: Exercise[] = [];
@@ -117,7 +140,6 @@ export function generateWorkoutPlan(profile: UserProfile): WorkoutDay[] {
     daySplit.groups.forEach(group => {
       const groupExercises = exerciseDatabase[group];
       if (groupExercises) {
-        // Pick 2 exercises per group for beginner, 2 for intermediate, 2-3 for advanced
         const count = profile.fitnessLevel === 'advanced' ? 
           Math.min(3, groupExercises.length) : 2;
         
@@ -127,6 +149,7 @@ export function generateWorkoutPlan(profile: UserProfile): WorkoutDay[] {
             ...ex,
             weight: calculateBaseWeight(ex.id, profile),
             isEasy: false,
+            isHard: false,
           });
         });
       }
@@ -135,7 +158,7 @@ export function generateWorkoutPlan(profile: UserProfile): WorkoutDay[] {
     days.push({
       id: `day-${index}`,
       name: daySplit.name,
-      dayOfWeek: dayNames[index],
+      dayOfWeek: ['Hétfő', 'Kedd', 'Szerda', 'Csütörtök', 'Péntek', 'Szombat', 'Vasárnap'][index],
       exercises,
     });
   });
@@ -143,26 +166,42 @@ export function generateWorkoutPlan(profile: UserProfile): WorkoutDay[] {
   return days;
 }
 
-export function calibrateWeight(exercise: Exercise, profile: UserProfile): Exercise {
+export function calibrateWeightEasy(exercise: Exercise, profile: UserProfile): Exercise {
   // If the weight was easy, increase by 10-15%
-  if (exercise.isEasy) {
-    let newWeight = exercise.weight * 1.125;
-    newWeight = Math.round(newWeight / 2.5) * 2.5;
-    if (newWeight <= exercise.weight) newWeight = exercise.weight + 2.5;
-    
-    return {
-      ...exercise,
-      weight: newWeight,
-      isEasy: false,
-      notes: `⬆️ Felsúlyozva ${exercise.weight}kg → ${newWeight}kg`,
-    };
-  }
-  return exercise;
+  let newWeight = exercise.weight * 1.125;
+  newWeight = Math.round(newWeight / 2.5) * 2.5;
+  if (newWeight <= exercise.weight) newWeight = exercise.weight + 2.5;
+  
+  return {
+    ...exercise,
+    weight: newWeight,
+    isEasy: false,
+    isHard: false,
+    notes: `⬆️ Felsúlyozva ${exercise.weight}kg → ${newWeight}kg`,
+  };
+}
+
+export function calibrateWeightHard(exercise: Exercise, profile: UserProfile): Exercise {
+  // If the weight was hard, decrease by 10%
+  let newWeight = exercise.weight * 0.9;
+  newWeight = Math.round(newWeight / 2.5) * 2.5;
+  if (newWeight >= exercise.weight) newWeight = exercise.weight - 2.5;
+  if (newWeight < 2.5) newWeight = 2.5;
+  
+  return {
+    ...exercise,
+    weight: newWeight,
+    isEasy: false,
+    isHard: false,
+    notes: `⬇️ Lesúlyozva ${exercise.weight}kg → ${newWeight}kg`,
+  };
 }
 
 export function getBMICategory(profile: UserProfile): { bmi: number; category: string; color: string } {
-  const heightM = profile.height / 100;
-  const bmi = profile.weight / (heightM * heightM);
+  const weight = typeof profile.weight === 'number' ? profile.weight : 75;
+  const height = typeof profile.height === 'number' ? profile.height : 175;
+  const heightM = height / 100;
+  const bmi = weight / (heightM * heightM);
   
   let category = '';
   let color = '';
@@ -174,3 +213,31 @@ export function getBMICategory(profile: UserProfile): { bmi: number; category: s
   
   return { bmi: Math.round(bmi * 10) / 10, category, color };
 }
+
+// Default gym machines
+export const defaultGymMachines = [
+  { id: 'default-bench', name: 'Pad', muscleGroup: 'Mell', isDefault: true, isCustom: false },
+  { id: 'default-incline-bench', name: 'Döntött pad', muscleGroup: 'Mell', isDefault: true, isCustom: false },
+  { id: 'default-cable-machine', name: 'Csiga gép', muscleGroup: 'Mell', isDefault: true, isCustom: false },
+  { id: 'default-chest-fly-machine', name: 'Tárogató gép', muscleGroup: 'Mell', isDefault: true, isCustom: false },
+  { id: 'default-lat-pulldown', name: 'Lehúzó csiga', muscleGroup: 'Hát', isDefault: true, isCustom: false },
+  { id: 'default-seated-row', name: 'Ülő evező gép', muscleGroup: 'Hát', isDefault: true, isCustom: false },
+  { id: 'default-t-bar-row', name: 'T-rúd evező', muscleGroup: 'Hát', isDefault: true, isCustom: false },
+  { id: 'default-squat-rack', name: 'Guggoló állvány', muscleGroup: 'Láb', isDefault: true, isCustom: false },
+  { id: 'default-leg-press', name: 'Lábtoló gép', muscleGroup: 'Láb', isDefault: true, isCustom: false },
+  { id: 'default-leg-curl', name: 'Lábhajlító gép', muscleGroup: 'Láb', isDefault: true, isCustom: false },
+  { id: 'default-leg-extension', name: 'Lábnyújtó gép', muscleGroup: 'Láb', isDefault: true, isCustom: false },
+  { id: 'default-calf-machine', name: 'Vádli gép', muscleGroup: 'Láb', isDefault: true, isCustom: false },
+  { id: 'default-hack-squat', name: 'Hackenschmidt gép', muscleGroup: 'Láb', isDefault: true, isCustom: false },
+  { id: 'default-shoulder-press', name: 'Vállnyomó gép', muscleGroup: 'Váll', isDefault: true, isCustom: false },
+  { id: 'default-smith-machine', name: 'Smith gép', muscleGroup: 'Váll', isDefault: true, isCustom: false },
+  { id: 'default-bicep-machine', name: 'Bicepsz gép', muscleGroup: 'Kar', isDefault: true, isCustom: false },
+  { id: 'default-tricep-machine', name: 'Tricepsz gép', muscleGroup: 'Kar', isDefault: true, isCustom: false },
+  { id: 'default-preacher-curl', name: 'Prédikátor pad', muscleGroup: 'Kar', isDefault: true, isCustom: false },
+  { id: 'default-ab-machine', name: 'Hasprés gép', muscleGroup: 'Törzs', isDefault: true, isCustom: false },
+  { id: 'default-cable-crossover', name: 'Kábel crossover', muscleGroup: 'Mell', isDefault: true, isCustom: false },
+  { id: 'default-dumbbell-rack', name: 'Kézsúlyzó állvány', muscleGroup: 'Kar', isDefault: true, isCustom: false },
+  { id: 'default-barbell-rack', name: 'Rúdsúlyzó állvány', muscleGroup: 'Láb', isDefault: true, isCustom: false },
+  { id: 'default-pull-up-bar', name: 'Húdzódkodó rúd', muscleGroup: 'Hát', isDefault: true, isCustom: false },
+  { id: 'default-dip-bar', name: 'Tolódzkodó korlát', muscleGroup: 'Mell', isDefault: true, isCustom: false },
+];

@@ -1,11 +1,13 @@
 export interface UserProfile {
   name: string;
-  weight: number; // kg
-  height: number; // cm
-  age: number;
+  weight: number | '';
+  height: number | '';
+  age: number | '';
   gender: 'male' | 'female';
   fitnessLevel: 'beginner' | 'intermediate' | 'advanced';
   goal: 'muscle_gain' | 'fat_loss' | 'strength' | 'endurance';
+  daysPerWeek: number;
+  language: 'hu' | 'en' | 'system';
 }
 
 export interface Exercise {
@@ -15,9 +17,11 @@ export interface Exercise {
   image?: string;
   sets: number;
   reps: number;
-  weight: number; // kg
+  weight: number;
   isEasy: boolean;
+  isHard: boolean;
   notes: string;
+  assignedEquipment?: string; // equipment id
 }
 
 export interface WorkoutDay {
@@ -34,11 +38,13 @@ export interface WorkoutPlan {
   createdAt: string;
 }
 
-export interface EquipmentImage {
+export interface GymMachine {
   id: string;
   name: string;
   imageUrl: string;
   muscleGroup: string;
+  isDefault: boolean;
+  isCustom: boolean;
 }
 
 export interface WeightLog {
@@ -46,4 +52,7 @@ export interface WeightLog {
   date: string;
   weight: number;
   wasEasy: boolean;
+  wasHard: boolean;
 }
+
+export type Language = 'hu' | 'en' | 'system';

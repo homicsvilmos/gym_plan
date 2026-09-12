@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
-import { UserProfile, WorkoutDay, EquipmentImage } from './types';
-import { generateWorkoutPlan, calibrateWeight, getBMICategory } from './workoutGenerator';
+import { UserProfile, WorkoutDay, GymMachine } from './types';
+import { generateWorkoutPlan, calibrateWeightEasy, calibrateWeightHard, getBMICategory } from './workoutGenerator';
+import { t, getSystemLanguage, TranslationKey } from './i18n';
 import ProfileSetup from './components/ProfileSetup';
 import WorkoutPlanView from './components/WorkoutPlanView';
 import EquipmentGallery from './components/EquipmentGallery';
@@ -12,13 +13,26 @@ function App() {
   const [activeTab, setActiveTab] = useState<Tab>('profile');
   const [profile, setProfile] = useState<UserProfile | null>(null);
   const [workoutDays, setWorkoutDays] = useState<WorkoutDay[]>([]);
-  const [equipment, setEquipment] = useState<EquipmentImage[]>([]);
+  const [equipment, setEquipment] = useState<GymMachine[]>([]);
   const [planGenerated, setPlanGenerated] = useState(false);
+  const [lang, setLang] = useState<'hu' | 'en'>('hu');
 
   useEffect(() => {
     const saved = localStorage.getItem('gymProfile');
     if (saved) {
-      setProfile(JSON.parse(saved));
+      const parsed = JSON.parse(saved);
+      setProfile(parsed);
+      // Set language
+      if (parsed.language === 'system') {
+        setLang(getSystemLanguage());
+      } else if (parsed.language === 'en') {
+        setLang('en');
+      } else {
+        setLang('hu');
+      }
+    } else {
+      // Default to system language
+      setLang(getSystemLanguage());
     }
     const savedPlan = localStorage.getItem('gymWorkoutPlan');
     if (savedPlan) {
@@ -34,6 +48,14 @@ function App() {
   const handleProfileSave = (newProfile: UserProfile) => {
     setProfile(newProfile);
     localStorage.setItem('gymProfile', JSON.stringify(newProfile));
+    // Update language
+    if (newProfile.language === 'system') {
+      setLang(getSystemLanguage());
+    } else if (newProfile.language === 'en') {
+      setLang('en');
+    } else {
+      setLang('hu');
+    }
     setActiveTab('workout');
   };
 
@@ -47,11 +69,30 @@ function App() {
   };
 
   const handleMarkEasy = (dayId: string, exerciseId: string) => {
+    if (!profile) return;
     const updated = workoutDays.map(day => {
       if (day.id === dayId) {
         const updatedExercises = day.exercises.map(ex => {
           if (ex.id === exerciseId) {
-            return calibrateWeight({ ...ex, isEasy: true }, profile!);
+            return calibrateWeightEasy({ ...ex, isEasy: true }, profile);
+          }
+          return ex;
+        });
+        return { ...day, exercises: updatedExercises };
+      }
+      return day;
+    });
+    setWorkoutDays(updated);
+    localStorage.setItem('gymWorkoutPlan', JSON.stringify(updated));
+  };
+
+  const handleMarkHard = (dayId: string, exerciseId: string) => {
+    if (!profile) return;
+    const updated = workoutDays.map(day => {
+      if (day.id === dayId) {
+        const updatedExercises = day.exercises.map(ex => {
+          if (ex.id === exerciseId) {
+            return calibrateWeightHard({ ...ex, isHard: true }, profile);
           }
           return ex;
         });
@@ -80,7 +121,24 @@ function App() {
     localStorage.setItem('gymWorkoutPlan', JSON.stringify(updated));
   };
 
-  const handleAddEquipment = (item: EquipmentImage) => {
+  const handleAssignEquipment = (dayId: string, exerciseId: string, equipmentId: string) => {
+    const updated = workoutDays.map(day => {
+      if (day.id === dayId) {
+        const updatedExercises = day.exercises.map(ex => {
+          if (ex.id === exerciseId) {
+            return { ...ex, assignedEquipment: equipmentId };
+          }
+          return ex;
+        });
+        return { ...day, exercises: updatedExercises };
+      }
+      return day;
+    });
+    setWorkoutDays(updated);
+    localStorage.setItem('gymWorkoutPlan', JSON.stringify(updated));
+  };
+
+  const handleAddEquipment = (item: GymMachine) => {
     const updated = [...equipment, item];
     setEquipment(updated);
     localStorage.setItem('gymEquipment', JSON.stringify(updated));
@@ -94,11 +152,11 @@ function App() {
 
   const bmi = profile ? getBMICategory(profile) : null;
 
-  const tabs: { id: Tab; label: string; icon: string }[] = [
-    { id: 'profile', label: 'Profil', icon: '👤' },
-    { id: 'workout', label: 'Edzésterv', icon: '💪' },
-    { id: 'equipment', label: 'Gépek', icon: '🏋️' },
-    { id: 'calibration', label: 'Kalibrálás', icon: '⚖️' },
+  const tabs: { id: Tab; labelKey: TranslationKey; icon: string }[] = [
+    { id: 'profile', labelKey: 'profile', icon: '👤' },
+    { id: 'workout', labelKey: 'workout', icon: '💪' },
+    { id: 'equipment', labelKey: 'equipment', icon: '🏋️' },
+    { id: 'calibration', labelKey: 'calibration', icon: '⚖️' },
   ];
 
   return (
@@ -110,17 +168,17 @@ function App() {
             <span className="text-3xl">🏋️</span>
             <div>
               <h1 className="text-xl font-bold bg-gradient-to-r from-orange-400 to-red-500 bg-clip-text text-transparent">
-                GymPlan
+                {t('appName', lang)}
               </h1>
-              <p className="text-xs text-gray-400">Edzésterv Készítő</p>
+              <p className="text-xs text-gray-400">{t('appSubtitle', lang)}</p>
             </div>
           </div>
           {profile && (
             <div className="hidden sm:flex items-center gap-4 text-sm">
               <div className="text-gray-400">
-                <span className="text-white font-semibold">{profile.weight}kg</span> / {profile.height}cm
+                <span className="text-white font-semibold">{profile.weight || '—'}kg</span> / {profile.height || '—'}cm
               </div>
-              {bmi && (
+              {bmi && typeof profile.weight === 'number' && typeof profile.height === 'number' && (
                 <div className={`font-semibold ${bmi.color}`}>
                   BMI: {bmi.bmi} ({bmi.category})
                 </div>
@@ -145,7 +203,7 @@ function App() {
                 }`}
               >
                 <span>{tab.icon}</span>
-                <span>{tab.label}</span>
+                <span>{t(tab.labelKey, lang)}</span>
               </button>
             ))}
           </div>
@@ -158,6 +216,7 @@ function App() {
           <ProfileSetup
             profile={profile}
             onSave={handleProfileSave}
+            lang={lang}
           />
         )}
         {activeTab === 'workout' && (
@@ -167,7 +226,11 @@ function App() {
             profile={profile}
             onGenerate={handleGeneratePlan}
             onMarkEasy={handleMarkEasy}
+            onMarkHard={handleMarkHard}
             onWeightUpdate={handleWeightUpdate}
+            onAssignEquipment={handleAssignEquipment}
+            equipment={equipment}
+            lang={lang}
           />
         )}
         {activeTab === 'equipment' && (
@@ -175,6 +238,7 @@ function App() {
             equipment={equipment}
             onAdd={handleAddEquipment}
             onRemove={handleRemoveEquipment}
+            lang={lang}
           />
         )}
         {activeTab === 'calibration' && (
@@ -183,6 +247,8 @@ function App() {
             profile={profile}
             onWeightUpdate={handleWeightUpdate}
             onMarkEasy={handleMarkEasy}
+            onMarkHard={handleMarkHard}
+            lang={lang}
           />
         )}
       </main>
