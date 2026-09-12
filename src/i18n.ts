@@ -1,0 +1,253 @@
+export const translations = {
+  hu: {
+    // Navigation
+    profile: 'Profil',
+    workout: 'Edzésterv',
+    equipment: 'Gépek',
+    calibration: 'Kalibrálás',
+    
+    // Header
+    appName: 'GymPlan',
+    appSubtitle: 'Edzésterv Készítő',
+    
+    // Profile
+    profileTitle: 'Profil beállítások',
+    profileSubtitle: 'Add meg az adataidat a személyre szabott edzéstervhez',
+    name: 'Név',
+    namePlaceholder: 'A te neved',
+    weight: 'Testsúly (kg)',
+    height: 'Magasság (cm)',
+    age: 'Életkor',
+    gender: 'Nem',
+    male: 'Férfi',
+    female: 'Nő',
+    fitnessLevel: 'Edzettségi szint',
+    beginner: 'Kezdő',
+    intermediate: 'Középhaladó',
+    advanced: 'Haladó',
+    goal: 'Cél',
+    muscleGain: 'Izomépítés',
+    fatLoss: 'Zsírvesztés',
+    strength: 'Erőnövelés',
+    endurance: 'Állóképesség',
+    daysPerWeek: 'Heti edzésnapok száma',
+    language: 'Nyelv',
+    systemLang: 'Rendszer nyelve',
+    hungarian: 'Magyar',
+    english: 'English',
+    saveProfile: 'Profil mentése és folytatás →',
+    updateProfile: 'Profil frissítése',
+    
+    // Workout
+    setupProfileFirst: 'Először állítsd be a profilod!',
+    setupProfileHint: 'A Profil fülön add meg az adataidat az edzésterv generáláshoz.',
+    readyToWorkout: 'Készen állsz az edzésre?',
+    generateHint: 'Generálj egy személyre szabott edzéstervet a profilod alapján!',
+    generatePlan: '🏋️ Edzésterv generálása',
+    regenerate: '🔄 Újragenerálás',
+    yourPlan: 'Edzésterved',
+    dayPlan: 'napos edzésterv',
+    sets: 'sorozat',
+    reps: 'ismétlés',
+    easy: '⬆️ Könnyű volt',
+    hard: '⬇️ Nehéz volt',
+    easyHint: 'Jelöld ha könnyű volt - felsúlyozzuk!',
+    hardHint: 'Jelöld ha nehéz volt - csökkentjük a súlyt!',
+    assignedMachine: 'Gép',
+    assignMachine: 'Gép hozzárendelése',
+    noMachine: 'Nincs gép',
+    seconds: 'másodperc',
+    
+    // Equipment
+    gymMachines: 'Termi Gépek & Eszközök',
+    gymMachinesSubtitle: 'Add hozzá a teremben elérhető gépeket képpel',
+    addNew: '+ Új gép',
+    cancel: '✕ Mégse',
+    addNewMachine: 'Új gép/eszköz hozzáadása',
+    machineName: 'Gép neve',
+    machineNamePlaceholder: 'pl. Smith gép, Hackenschmidt...',
+    muscleGroup: 'Izomcsoport',
+    chooseOne: 'Válassz...',
+    other: 'Egyéb',
+    uploadImage: 'Kép feltöltése',
+    preview: 'Előnézet',
+    add: 'Hozzáadás',
+    noMachines: 'Még nincs gép hozzáadva',
+    noMachinesHint: 'Kattints a "+ Új gép" gombra és tölts fel képeket a teremben elérhető gépekről',
+    defaultMachines: 'Alap gépek',
+    addDefault: 'Hozzáadás',
+    added: '✓ Hozzáadva',
+    customMachine: 'Egyedi gép',
+    customMachineHint: 'Olyan gép ami nincs az alap listában',
+    
+    // Calibration
+    weightCalibration: 'Súly Kalibrálás',
+    calibrationHint: 'Állítsd be a súlyokat gyakorlatonként. Ha egy súly könnyű, automatikusan növeljük!',
+    calibrationHistory: 'Kalibrációs előzmények',
+    noCalibration: 'Még nem volt kalibrálás',
+    tips: 'Tippek a kalibráláshoz',
+    tip1: '• Ha 12+ ismétlést könnyen megcsináltál → jelöld "Könnyű volt"-nak',
+    tip2: '• Ha 8-nál kevesebbet bírtál → jelöld "Nehéz volt"-nak',
+    tip3: '• Az automatikus kalibrálás ~12.5%-kal növeli, ~10%-kal csökkenti a súlyt',
+    tip4: '• Hetente egyszer érdemes kalibrálni, ne minden edzésen',
+    manual: '✏️ Manuális',
+    set: 'Beállítás',
+    autoEasy: '⬆️ Könnyű volt (+12.5%)',
+    autoHard: '⬇️ Nehéz volt (-10%)',
+    
+    // Equipment actions
+    rename: 'Átnevezés',
+    reset: 'Visszaállítás',
+    renamed: 'Átnevezve',
+    original: 'Eredeti',
+    
+    // Auth
+    login: 'Belépés',
+    logout: 'Kijelentkezés',
+    register: 'Regisztráció',
+    username: 'Felhasználónév',
+    password: 'Jelszó',
+    adminPanel: 'Admin Panel',
+    adminRights: 'Admin jogosultság',
+    users: 'Felhasználók',
+    createUser: 'Új felhasználó',
+    deleteUser: 'Törlés',
+    
+    // BMI
+    underweight: 'Sovány',
+    normal: 'Normál',
+    overweight: 'Túlsúlyos',
+    obese: 'Elhízott',
+  },
+  en: {
+    // Navigation
+    profile: 'Profile',
+    workout: 'Workout Plan',
+    equipment: 'Machines',
+    calibration: 'Calibration',
+    
+    // Header
+    appName: 'GymPlan',
+    appSubtitle: 'Workout Planner',
+    
+    // Profile
+    profileTitle: 'Profile Settings',
+    profileSubtitle: 'Enter your details for a personalized workout plan',
+    name: 'Name',
+    namePlaceholder: 'Your name',
+    weight: 'Weight (kg)',
+    height: 'Height (cm)',
+    age: 'Age',
+    gender: 'Gender',
+    male: 'Male',
+    female: 'Female',
+    fitnessLevel: 'Fitness Level',
+    beginner: 'Beginner',
+    intermediate: 'Intermediate',
+    advanced: 'Advanced',
+    goal: 'Goal',
+    muscleGain: 'Muscle Gain',
+    fatLoss: 'Fat Loss',
+    strength: 'Strength',
+    endurance: 'Endurance',
+    daysPerWeek: 'Workout days per week',
+    language: 'Language',
+    systemLang: 'System language',
+    hungarian: 'Magyar',
+    english: 'English',
+    saveProfile: 'Save profile and continue →',
+    updateProfile: 'Update profile',
+    
+    // Workout
+    setupProfileFirst: 'Set up your profile first!',
+    setupProfileHint: 'Enter your details in the Profile tab to generate a workout plan.',
+    readyToWorkout: 'Ready to workout?',
+    generateHint: 'Generate a personalized workout plan based on your profile!',
+    generatePlan: '🏋️ Generate Workout Plan',
+    regenerate: '🔄 Regenerate',
+    yourPlan: 'Your Workout Plan',
+    dayPlan: 'day workout plan',
+    sets: 'sets',
+    reps: 'reps',
+    easy: '⬆️ Was easy',
+    hard: '⬇️ Was hard',
+    easyHint: 'Mark if it was easy - we will increase the weight!',
+    hardHint: 'Mark if it was hard - we will decrease the weight!',
+    assignedMachine: 'Machine',
+    assignMachine: 'Assign machine',
+    noMachine: 'No machine',
+    seconds: 'seconds',
+    
+    // Equipment
+    gymMachines: 'Gym Machines & Equipment',
+    gymMachinesSubtitle: 'Add machines available in your gym with photos',
+    addNew: '+ New machine',
+    cancel: '✕ Cancel',
+    addNewMachine: 'Add new machine/equipment',
+    machineName: 'Machine name',
+    machineNamePlaceholder: 'e.g. Smith machine, Hack squat...',
+    muscleGroup: 'Muscle Group',
+    chooseOne: 'Choose...',
+    other: 'Other',
+    uploadImage: 'Upload image',
+    preview: 'Preview',
+    add: 'Add',
+    noMachines: 'No machines added yet',
+    noMachinesHint: 'Click "+ New machine" and upload photos of machines available in your gym',
+    defaultMachines: 'Default Machines',
+    addDefault: 'Add',
+    added: '✓ Added',
+    customMachine: 'Custom Machine',
+    customMachineHint: 'A machine not in the default list',
+    
+    // Calibration
+    weightCalibration: 'Weight Calibration',
+    calibrationHint: 'Adjust weights per exercise. If a weight is easy, we automatically increase it!',
+    calibrationHistory: 'Calibration history',
+    noCalibration: 'No calibrations yet',
+    tips: 'Calibration tips',
+    tip1: '• If you easily completed 12+ reps → mark "Was easy"',
+    tip2: '• If you could do fewer than 8 reps → mark "Was hard"',
+    tip3: '• Auto calibration increases by ~12.5%, decreases by ~10%',
+    tip4: '• Calibrate once a week, not every session',
+    manual: '✏️ Manual',
+    set: 'Set',
+    autoEasy: '⬆️ Was easy (+12.5%)',
+    autoHard: '⬇️ Was hard (-10%)',
+    
+    // Equipment actions
+    rename: 'Rename',
+    reset: 'Reset',
+    renamed: 'Renamed',
+    original: 'Original',
+    
+    // Auth
+    login: 'Login',
+    logout: 'Logout',
+    register: 'Register',
+    username: 'Username',
+    password: 'Password',
+    adminPanel: 'Admin Panel',
+    adminRights: 'Admin rights',
+    users: 'Users',
+    createUser: 'New user',
+    deleteUser: 'Delete',
+    
+    // BMI
+    underweight: 'Underweight',
+    normal: 'Normal',
+    overweight: 'Overweight',
+    obese: 'Obese',
+  },
+};
+
+export type TranslationKey = keyof typeof translations.hu;
+
+export function t(key: TranslationKey, lang: 'hu' | 'en'): string {
+  return translations[lang][key] || translations.hu[key] || key;
+}
+
+export function getSystemLanguage(): 'hu' | 'en' {
+  const lang = navigator.language || 'en';
+  return lang.startsWith('hu') ? 'hu' : 'en';
+}
