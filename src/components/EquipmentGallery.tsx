@@ -89,23 +89,42 @@ export default function EquipmentGallery({ equipment, onAdd, onRemove, onRename,
 
   return (
     <div>
-      <div className="flex items-center justify-between mb-6 flex-wrap gap-3">
-        <div>
-          <h2 className="text-2xl font-bold text-white text-shadow">{t('gymMachines', lang)}</h2>
-          <p className="text-white/60 text-sm">{t('gymMachinesSubtitle', lang)}</p>
+      <div className="flex items-center justify-between mb-4 sm:mb-6 flex-wrap gap-2 sm:gap-3">
+        <div className="flex items-center gap-3">
+          <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl glass-blue flex items-center justify-center flex-shrink-0">
+            <svg className="w-5 h-5 sm:w-6 sm:h-6 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+            </svg>
+          </div>
+          <div>
+            <h2 className="text-lg sm:text-2xl font-bold text-white">{t('gymMachines', lang)}</h2>
+            <p className="text-white/40 text-xs sm:text-sm">{t('gymMachinesSubtitle', lang)}</p>
+          </div>
         </div>
         <div className="flex gap-2">
           <button
             onClick={() => setShowDefaults(!showDefaults)}
-            className="glass-subtle hover:bg-white/10 text-white font-medium py-2 px-4 rounded-xl transition-all text-sm btn-press"
+            className="glass-subtle hover:bg-blue-500/10 text-blue-300 font-medium py-2 px-3 sm:px-4 rounded-xl transition-all text-xs sm:text-sm btn-press flex items-center gap-1.5"
           >
-            📋 {t('defaultMachines', lang)}
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 10h16M4 14h16M4 18h16" />
+            </svg>
+            <span className="hidden sm:inline">{t('defaultMachines', lang)}</span>
           </button>
           <button
             onClick={() => setShowForm(!showForm)}
-            className="glass-strong hover:bg-white/15 text-white font-medium py-2 px-4 rounded-xl transition-all text-sm btn-press"
+            className="glass-blue hover:bg-blue-500/20 text-blue-300 font-medium py-2 px-3 sm:px-4 rounded-xl transition-all text-xs sm:text-sm btn-press flex items-center gap-1.5"
           >
-            {showForm ? t('cancel', lang) : t('addNew', lang)}
+            {showForm ? (
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            ) : (
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+              </svg>
+            )}
+            <span className="hidden sm:inline">{showForm ? t('cancel', lang) : t('addNew', lang)}</span>
           </button>
         </div>
       </div>

@@ -1,21 +1,23 @@
 import { useState, useEffect } from 'react';
 import { UserProfile, WorkoutDay, GymMachine } from './types';
 import { generateWorkoutPlan, calibrateWeightEasy, calibrateWeightHard, getBMICategory, exerciseToMachineMap } from './workoutGenerator';
-import { t, getSystemLanguage, TranslationKey } from './i18n';
+import { t, getSystemLanguage } from './i18n';
 import ProfileSetup from './components/ProfileSetup';
 import WorkoutPlanView from './components/WorkoutPlanView';
 import EquipmentGallery from './components/EquipmentGallery';
 import WeightCalibration from './components/WeightCalibration';
 
-type Tab = 'profile' | 'workout' | 'equipment' | 'calibration';
+type MainView = 'workout' | 'equipment' | 'calibration' | 'profile';
 
 function App() {
-  const [activeTab, setActiveTab] = useState<Tab>('profile');
+  const [mainView, setMainView] = useState<MainView>('workout');
   const [profile, setProfile] = useState<UserProfile | null>(null);
   const [workoutDays, setWorkoutDays] = useState<WorkoutDay[]>([]);
   const [equipment, setEquipment] = useState<GymMachine[]>([]);
   const [planGenerated, setPlanGenerated] = useState(false);
   const [lang, setLang] = useState<'hu' | 'en'>('hu');
+  const [showMenu, setShowMenu] = useState(false);
+  const [showProfile, setShowProfile] = useState(false);
 
   useEffect(() => {
     const saved = localStorage.getItem('gymProfile');
@@ -53,7 +55,10 @@ function App() {
     } else {
       setLang('hu');
     }
-    setActiveTab('workout');
+    setShowProfile(false);
+    if (!planGenerated) {
+      setMainView('workout');
+    }
   };
 
   const handleGeneratePlan = () => {
@@ -176,91 +181,151 @@ function App() {
 
   const bmi = profile ? getBMICategory(profile) : null;
 
-  const tabs: { id: Tab; labelKey: TranslationKey; icon: string }[] = [
-    { id: 'profile', labelKey: 'profile', icon: '👤' },
-    { id: 'workout', labelKey: 'workout', icon: '💪' },
-    { id: 'equipment', labelKey: 'equipment', icon: '🏋️' },
-    { id: 'calibration', labelKey: 'calibration', icon: '⚖️' },
-  ];
+  const getViewTitle = () => {
+    switch (mainView) {
+      case 'workout': return t('workout', lang);
+      case 'equipment': return t('equipment', lang);
+      case 'calibration': return t('calibration', lang);
+      case 'profile': return t('profile', lang);
+    }
+  };
 
   return (
-    <div className="min-h-screen relative overflow-hidden">
-      {/* Animated gradient background */}
-      <div className="fixed inset-0 animated-gradient bg-gradient-to-br from-indigo-950 via-purple-900 to-slate-900" />
+    <div className="min-h-screen bg-black relative overflow-hidden">
+      {/* Subtle dark gradient background */}
+      <div className="fixed inset-0 bg-gradient-to-br from-gray-950 via-black to-gray-900" />
       
-      {/* Floating orbs for depth */}
+      {/* Subtle ambient light */}
       <div className="fixed inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-[-20%] left-[-10%] w-[600px] h-[600px] rounded-full bg-purple-600/20 blur-[120px]" />
-        <div className="absolute bottom-[-20%] right-[-10%] w-[500px] h-[500px] rounded-full bg-blue-600/20 blur-[120px]" />
-        <div className="absolute top-[40%] right-[20%] w-[400px] h-[400px] rounded-full bg-orange-500/10 blur-[100px]" />
-        <div className="absolute bottom-[20%] left-[30%] w-[350px] h-[350px] rounded-full bg-pink-500/10 blur-[100px]" />
+        <div className="absolute top-[-30%] left-[-20%] w-[800px] h-[800px] rounded-full bg-blue-900/5 blur-[150px]" />
+        <div className="absolute bottom-[-30%] right-[-20%] w-[600px] h-[600px] rounded-full bg-blue-800/5 blur-[150px]" />
       </div>
 
       {/* Content */}
       <div className="relative z-10 min-h-screen flex flex-col">
         {/* Header */}
-        <header className="glass-strong sticky top-0 z-50">
+        <header className="glass-strong sticky top-0 z-50 safe-area-top">
           <div className="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-xl glass flex items-center justify-center text-xl">
-                🏋️
-              </div>
-              <div>
-                <h1 className="text-xl font-bold text-white text-shadow bg-gradient-to-r from-white to-white/80 bg-clip-text text-transparent">
-                  {t('appName', lang)}
-                </h1>
-                <p className="text-xs text-white/60">{t('appSubtitle', lang)}</p>
-              </div>
-            </div>
-            {profile && (
-              <div className="hidden sm:flex items-center gap-4 text-sm">
-                <div className="glass-subtle rounded-full px-3 py-1.5 text-white/80">
-                  <span className="text-white font-semibold">{profile.weight || '—'}kg</span>
-                  <span className="text-white/40 mx-1">/</span>
-                  <span>{profile.height || '—'}cm</span>
-                </div>
-                {bmi && typeof profile.weight === 'number' && typeof profile.height === 'number' && (
-                  <div className={`glass-subtle rounded-full px-3 py-1.5 font-semibold ${bmi.color}`}>
-                    BMI: {bmi.bmi}
+            {/* Left: Hamburger Menu */}
+            <div className="relative">
+              <button
+                onClick={() => { setShowMenu(!showMenu); setShowProfile(false); }}
+                className="w-10 h-10 rounded-xl glass flex items-center justify-center text-blue-400 hover:bg-blue-500/10 transition-all btn-press"
+              >
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+                </svg>
+              </button>
+              
+              {/* Dropdown Menu */}
+              {showMenu && (
+                <>
+                  <div className="fixed inset-0 z-40" onClick={() => setShowMenu(false)} />
+                  <div className="absolute top-12 left-0 glass-strong rounded-2xl p-2 min-w-[200px] z-50 shadow-2xl">
+                    <button
+                      onClick={() => { setMainView('workout'); setShowMenu(false); }}
+                      className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-left transition-all ${
+                        mainView === 'workout' ? 'glass-blue text-blue-300' : 'text-white/70 hover:bg-white/5 hover:text-white'
+                      }`}
+                    >
+                      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+                      </svg>
+                      <span className="font-medium">{t('workout', lang)}</span>
+                    </button>
+                    <button
+                      onClick={() => { setMainView('equipment'); setShowMenu(false); }}
+                      className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-left transition-all ${
+                        mainView === 'equipment' ? 'glass-blue text-blue-300' : 'text-white/70 hover:bg-white/5 hover:text-white'
+                      }`}
+                    >
+                      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+                      </svg>
+                      <span className="font-medium">{t('equipment', lang)}</span>
+                    </button>
+                    <button
+                      onClick={() => { setMainView('calibration'); setShowMenu(false); }}
+                      className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-left transition-all ${
+                        mainView === 'calibration' ? 'glass-blue text-blue-300' : 'text-white/70 hover:bg-white/5 hover:text-white'
+                      }`}
+                    >
+                      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 6l3 1m0 0l-3 9a5.002 5.002 0 006.001 0M6 7l3 9M6 7l6-2m6 2l3-1m-3 1l-3 9a5.002 5.002 0 006.001 0M18 7l3 9m-3-9l-6-2m0-2v2m0 16V5m0 16H9m3 0h3" />
+                      </svg>
+                      <span className="font-medium">{t('calibration', lang)}</span>
+                    </button>
                   </div>
-                )}
-              </div>
-            )}
+                </>
+              )}
+            </div>
+
+            {/* Center: Title */}
+            <h1 className="text-lg font-bold text-white text-shadow absolute left-1/2 transform -translate-x-1/2">
+              {getViewTitle()}
+            </h1>
+
+            {/* Right: Profile Button */}
+            <div className="relative">
+              <button
+                onClick={() => { setShowProfile(!showProfile); setShowMenu(false); }}
+                className="w-10 h-10 rounded-xl glass flex items-center justify-center text-blue-400 hover:bg-blue-500/10 transition-all btn-press"
+              >
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                </svg>
+              </button>
+              
+              {/* Profile Dropdown */}
+              {showProfile && (
+                <>
+                  <div className="fixed inset-0 z-40" onClick={() => setShowProfile(false)} />
+                  <div className="absolute top-12 right-0 glass-strong rounded-2xl p-4 min-w-[240px] z-50 shadow-2xl">
+                    {profile ? (
+                      <>
+                        <div className="text-center mb-3 pb-3 border-b border-white/10">
+                          <div className="text-white font-bold">{profile.name || (lang === 'hu' ? 'Felhasználó' : 'User')}</div>
+                          <div className="text-white/50 text-sm mt-1">
+                            {profile.weight || '—'}kg • {profile.height || '—'}cm
+                          </div>
+                          {bmi && typeof profile.weight === 'number' && typeof profile.height === 'number' && (
+                            <div className={`text-sm font-semibold mt-1 ${bmi.color}`}>
+                              BMI: {bmi.bmi}
+                            </div>
+                          )}
+                        </div>
+                        <button
+                          onClick={() => { setMainView('profile'); setShowProfile(false); }}
+                          className="w-full flex items-center gap-3 px-3 py-2 rounded-xl text-left text-white/70 hover:bg-white/5 hover:text-white transition-all"
+                        >
+                          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                          </svg>
+                          <span className="text-sm font-medium">{t('profile', lang)}</span>
+                        </button>
+                      </>
+                    ) : (
+                      <button
+                        onClick={() => { setMainView('profile'); setShowProfile(false); }}
+                        className="w-full flex items-center gap-3 px-3 py-2 rounded-xl text-left text-white/70 hover:bg-white/5 hover:text-white transition-all"
+                      >
+                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                        </svg>
+                        <span className="text-sm font-medium">{t('profile', lang)}</span>
+                      </button>
+                    )}
+                  </div>
+                </>
+              )}
+            </div>
           </div>
         </header>
 
-        {/* Navigation */}
-        <nav className="glass-subtle border-b border-white/10">
-          <div className="max-w-7xl mx-auto px-4">
-            <div className="flex overflow-x-auto gap-1 py-1">
-              {tabs.map(tab => (
-                <button
-                  key={tab.id}
-                  onClick={() => setActiveTab(tab.id)}
-                  className={`flex items-center gap-2 px-4 py-2.5 text-sm font-medium whitespace-nowrap rounded-xl transition-all ${
-                    activeTab === tab.id
-                      ? 'glass text-white shadow-lg'
-                      : 'text-white/50 hover:text-white/80 hover:bg-white/5'
-                  }`}
-                >
-                  <span className="text-base">{tab.icon}</span>
-                  <span>{t(tab.labelKey, lang)}</span>
-                </button>
-              ))}
-            </div>
-          </div>
-        </nav>
-
         {/* Main Content */}
-        <main className="flex-1 max-w-7xl mx-auto px-4 py-6 w-full">
-          {activeTab === 'profile' && (
-            <ProfileSetup
-              profile={profile}
-              onSave={handleProfileSave}
-              lang={lang}
-            />
-          )}
-          {activeTab === 'workout' && (
+        <main className="flex-1 max-w-7xl mx-auto px-3 sm:px-4 py-4 sm:py-6 w-full safe-area-bottom">
+          {mainView === 'workout' && (
             <WorkoutPlanView
               days={workoutDays}
               planGenerated={planGenerated}
@@ -274,7 +339,7 @@ function App() {
               lang={lang}
             />
           )}
-          {activeTab === 'equipment' && (
+          {mainView === 'equipment' && (
             <EquipmentGallery
               equipment={equipment}
               onAdd={handleAddEquipment}
@@ -284,13 +349,20 @@ function App() {
               lang={lang}
             />
           )}
-          {activeTab === 'calibration' && (
+          {mainView === 'calibration' && (
             <WeightCalibration
               days={workoutDays}
               profile={profile}
               onWeightUpdate={handleWeightUpdate}
               onMarkEasy={handleMarkEasy}
               onMarkHard={handleMarkHard}
+              lang={lang}
+            />
+          )}
+          {mainView === 'profile' && (
+            <ProfileSetup
+              profile={profile}
+              onSave={handleProfileSave}
               lang={lang}
             />
           )}

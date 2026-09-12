@@ -22,11 +22,15 @@ export default function WorkoutPlanView({ days, planGenerated, profile, onGenera
 
   if (!profile) {
     return (
-      <div className="text-center py-16">
-        <div className="glass-strong rounded-3xl p-12 max-w-lg mx-auto">
-          <span className="text-7xl mb-4 block">👤</span>
-          <h2 className="text-2xl font-bold mb-2 text-white text-shadow">{t('setupProfileFirst', lang)}</h2>
-          <p className="text-white/60">{t('setupProfileHint', lang)}</p>
+      <div className="text-center py-12 sm:py-16">
+        <div className="glass-strong rounded-3xl p-8 sm:p-12 max-w-md mx-auto">
+          <div className="w-16 h-16 mx-auto mb-4 rounded-2xl glass-blue flex items-center justify-center">
+            <svg className="w-8 h-8 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+            </svg>
+          </div>
+          <h2 className="text-xl sm:text-2xl font-bold mb-2 text-white">{t('setupProfileFirst', lang)}</h2>
+          <p className="text-white/50 text-sm">{t('setupProfileHint', lang)}</p>
         </div>
       </div>
     );
@@ -34,32 +38,36 @@ export default function WorkoutPlanView({ days, planGenerated, profile, onGenera
 
   if (!planGenerated) {
     return (
-      <div className="max-w-lg mx-auto text-center py-12">
-        <div className="glass-strong rounded-3xl p-8">
-          <span className="text-7xl mb-4 block">💪</span>
-          <h2 className="text-2xl font-bold mb-2 text-white text-shadow">{t('readyToWorkout', lang)}</h2>
-          <p className="text-white/60 mb-6">{t('generateHint', lang)}</p>
+      <div className="max-w-md mx-auto text-center py-8 sm:py-12">
+        <div className="glass-strong rounded-3xl p-6 sm:p-8">
+          <div className="w-16 h-16 mx-auto mb-4 rounded-2xl glass-blue flex items-center justify-center">
+            <svg className="w-8 h-8 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />
+            </svg>
+          </div>
+          <h2 className="text-xl sm:text-2xl font-bold mb-2 text-white">{t('readyToWorkout', lang)}</h2>
+          <p className="text-white/50 mb-6 text-sm">{t('generateHint', lang)}</p>
           <div className="glass-subtle rounded-2xl p-4 mb-6 text-left text-sm">
-            <div className="grid grid-cols-2 gap-3">
-              <div className="text-white/60">{t('weight', lang)}:</div>
+            <div className="grid grid-cols-2 gap-2 sm:gap-3">
+              <div className="text-white/50">{t('weight', lang)}:</div>
               <div className="font-semibold text-white">{profile.weight || '—'} kg</div>
-              <div className="text-white/60">{t('height', lang)}:</div>
+              <div className="text-white/50">{t('height', lang)}:</div>
               <div className="font-semibold text-white">{profile.height || '—'} cm</div>
-              <div className="text-white/60">{t('fitnessLevel', lang)}:</div>
+              <div className="text-white/50">{t('fitnessLevel', lang)}:</div>
               <div className="font-semibold text-white">
                 {t((profile.fitnessLevel === 'beginner' ? 'beginner' : profile.fitnessLevel === 'intermediate' ? 'intermediate' : 'advanced') as TranslationKey, lang)}
               </div>
-              <div className="text-white/60">{t('goal', lang)}:</div>
+              <div className="text-white/50">{t('goal', lang)}:</div>
               <div className="font-semibold text-white">
                 {t((profile.goal === 'muscle_gain' ? 'muscleGain' : profile.goal === 'fat_loss' ? 'fatLoss' : profile.goal === 'strength' ? 'strength' : 'endurance') as TranslationKey, lang)}
               </div>
-              <div className="text-white/60">{t('daysPerWeek', lang)}:</div>
+              <div className="text-white/50">{t('daysPerWeek', lang)}:</div>
               <div className="font-semibold text-white">{profile.daysPerWeek}</div>
             </div>
           </div>
           <button
             onClick={onGenerate}
-            className="w-full glass-strong text-white font-bold py-4 px-6 rounded-xl hover:bg-white/15 transition-all transform hover:scale-[1.02] active:scale-[0.98] shadow-xl btn-press"
+            className="w-full glass-blue text-blue-300 font-bold py-4 px-6 rounded-xl hover:bg-blue-500/20 transition-all transform hover:scale-[1.01] active:scale-[0.99] shadow-lg btn-press"
           >
             {t('generatePlan', lang)}
           </button>
@@ -69,140 +77,134 @@ export default function WorkoutPlanView({ days, planGenerated, profile, onGenera
   }
 
   return (
-    <div className="space-y-4">
-      <div className="flex items-center justify-between mb-4">
+    <div className="space-y-3 sm:space-y-4">
+      <div className="flex items-center justify-between mb-2">
         <div>
-          <h2 className="text-2xl font-bold text-white text-shadow">{t('yourPlan', lang)}</h2>
-          <p className="text-white/60 text-sm">{days.length} {t('dayPlan', lang)}</p>
+          <h2 className="text-lg sm:text-xl font-bold text-white">{t('yourPlan', lang)}</h2>
+          <p className="text-white/40 text-xs sm:text-sm">{days.length} {t('dayPlan', lang)}</p>
         </div>
         <button
           onClick={onGenerate}
-          className="glass-subtle hover:bg-white/10 text-white text-sm font-medium py-2 px-4 rounded-xl transition-all btn-press"
+          className="glass-subtle hover:bg-white/5 text-white/70 text-xs sm:text-sm font-medium py-2 px-3 sm:px-4 rounded-xl transition-all btn-press flex items-center gap-1.5"
         >
-          {t('regenerate', lang)}
+          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+          </svg>
+          <span className="hidden sm:inline">{t('regenerate', lang)}</span>
         </button>
       </div>
 
       {days.map(day => (
-        <div key={day.id} className="glass-strong rounded-2xl overflow-hidden hover-lift">
+        <div key={day.id} className="glass-strong rounded-2xl overflow-hidden">
           {/* Day Header */}
           <button
             onClick={() => setExpandedDay(expandedDay === day.id ? null : day.id)}
-            className="w-full flex items-center justify-between p-5 hover:bg-white/5 transition-all"
+            className="w-full flex items-center justify-between p-4 sm:p-5 hover:bg-white/5 transition-all"
           >
-            <div className="flex items-center gap-4">
-              <div className="w-12 h-12 rounded-xl glass flex items-center justify-center text-2xl">
-                📅
+            <div className="flex items-center gap-3 sm:gap-4">
+              <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl glass-blue flex items-center justify-center flex-shrink-0">
+                <svg className="w-5 h-5 sm:w-6 sm:h-6 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                </svg>
               </div>
               <div className="text-left">
-                <h3 className="font-bold text-lg text-white">{day.name}</h3>
-                <p className="text-white/50 text-sm">{day.exercises.length} {lang === 'hu' ? 'gyakorlat' : 'exercises'}</p>
+                <h3 className="font-bold text-sm sm:text-lg text-white">{day.name}</h3>
+                <p className="text-white/40 text-xs sm:text-sm">{day.exercises.length} {lang === 'hu' ? 'gyakorlat' : 'exercises'}</p>
               </div>
             </div>
-            <span className={`text-white/40 transition-transform text-xl ${expandedDay === day.id ? 'rotate-180' : ''}`}>
-              ▼
-            </span>
+            <svg className={`w-5 h-5 text-white/30 transition-transform flex-shrink-0 ${expandedDay === day.id ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+            </svg>
           </button>
 
           {/* Exercises */}
           {expandedDay === day.id && (
-            <div className="border-t border-white/10 p-4 space-y-3">
+            <div className="border-t border-white/5 p-3 sm:p-4 space-y-2 sm:space-y-3">
               {day.exercises.map(exercise => {
                 const assignedMachine = equipment.find(e => e.id === exercise.assignedEquipment);
                 return (
                   <div
                     key={exercise.id}
-                    className="glass-subtle rounded-xl p-4 hover-lift"
+                    className="glass-subtle rounded-xl p-3 sm:p-4"
                   >
-                    <div className="flex items-start justify-between gap-3">
-                      <div className="flex-1">
-                        <div className="flex items-center gap-2 flex-wrap mb-2">
-                          <h4 className="font-semibold text-white">{exercise.name}</h4>
-                          <span className="text-xs glass-subtle px-2 py-0.5 rounded-full text-white/70">
+                    <div className="flex items-start justify-between gap-2 sm:gap-3">
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-center gap-1.5 sm:gap-2 flex-wrap mb-1.5 sm:mb-2">
+                          <h4 className="font-semibold text-sm sm:text-base text-white truncate">{exercise.name}</h4>
+                          <span className="text-[10px] sm:text-xs glass-subtle px-1.5 sm:px-2 py-0.5 rounded-full text-white/60 flex-shrink-0">
                             {exercise.muscleGroup}
                           </span>
-                          {assignedMachine && (
-                            <span className="text-xs glass px-2 py-0.5 rounded-full text-orange-300">
-                              🏋️ {assignedMachine.name}
-                            </span>
-                          )}
                         </div>
-                        <div className="flex items-center gap-4 text-sm text-white/60">
+                        {assignedMachine && (
+                          <div className="flex items-center gap-1 mb-1.5">
+                            <svg className="w-3 h-3 text-blue-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+                            </svg>
+                            <span className="text-[10px] sm:text-xs text-blue-300 truncate">{assignedMachine.name}</span>
+                          </div>
+                        )}
+                        <div className="flex items-center gap-2 sm:gap-3 text-xs sm:text-sm text-white/50">
                           <span>{exercise.sets} {t('sets', lang)}</span>
-                          <span className="text-white/30">×</span>
+                          <span className="text-white/20">×</span>
                           <span>{exercise.reps} {t('reps', lang)}</span>
-                          <span className="text-white/30">•</span>
+                          <span className="text-white/20">•</span>
                           {editingWeight?.dayId === day.id && editingWeight?.exerciseId === exercise.id ? (
-                            <div className="flex items-center gap-2">
+                            <div className="flex items-center gap-1.5">
                               <input
                                 type="number"
                                 value={tempWeight}
                                 onChange={e => setTempWeight(Number(e.target.value))}
-                                className="w-20 glass-subtle rounded-lg px-2 py-1 text-white text-sm focus:outline-none focus:ring-1 focus:ring-white/20"
+                                className="w-16 sm:w-20 glass-subtle rounded-lg px-2 py-1 text-white text-xs sm:text-sm focus:outline-none focus:ring-1 focus:ring-blue-500/30"
                                 step="2.5"
                                 min="0"
                               />
-                              <span className="text-white/60">kg</span>
-                              <button
-                                onClick={() => {
-                                  onWeightUpdate(day.id, exercise.id, tempWeight);
-                                  setEditingWeight(null);
-                                }}
-                                className="text-green-400 hover:text-green-300"
-                              >
-                                ✓
-                              </button>
-                              <button
-                                onClick={() => setEditingWeight(null)}
-                                className="text-red-400 hover:text-red-300"
-                              >
-                                ✗
-                              </button>
+                              <span className="text-white/50 text-xs">kg</span>
+                              <button onClick={() => { onWeightUpdate(day.id, exercise.id, tempWeight); setEditingWeight(null); }} className="text-green-400 hover:text-green-300">✓</button>
+                              <button onClick={() => setEditingWeight(null)} className="text-red-400 hover:text-red-300">✗</button>
                             </div>
                           ) : (
                             <button
-                              onClick={() => {
-                                setEditingWeight({ dayId: day.id, exerciseId: exercise.id });
-                                setTempWeight(exercise.weight);
-                              }}
-                              className="font-bold text-orange-400 hover:text-orange-300"
+                              onClick={() => { setEditingWeight({ dayId: day.id, exerciseId: exercise.id }); setTempWeight(exercise.weight); }}
+                              className="font-bold text-blue-400 hover:text-blue-300"
                             >
                               {exercise.weight} kg
                             </button>
                           )}
                         </div>
                         {exercise.notes && (
-                          <p className="text-xs text-green-400 mt-2">{exercise.notes}</p>
+                          <p className="text-[10px] sm:text-xs text-green-400/80 mt-1">{exercise.notes}</p>
                         )}
                         
                         {/* Equipment Assignment */}
-                        <div className="mt-3">
+                        <div className="mt-2">
                           <select
                             value={exercise.assignedEquipment || ''}
                             onChange={e => onAssignEquipment(day.id, exercise.id, e.target.value)}
-                            className="glass-subtle rounded-lg px-3 py-1.5 text-xs text-white/80 focus:outline-none focus:ring-1 focus:ring-white/20"
+                            className="glass-subtle rounded-lg px-2 sm:px-3 py-1 sm:py-1.5 text-[10px] sm:text-xs text-white/70 focus:outline-none focus:ring-1 focus:ring-blue-500/30 max-w-full"
                           >
-                            <option value="" className="bg-gray-800">{t('assignMachine', lang)}</option>
+                            <option value="" className="bg-gray-900">{t('assignMachine', lang)}</option>
                             {equipment.map(eq => (
-                              <option key={eq.id} value={eq.id} className="bg-gray-800">{eq.name} ({eq.muscleGroup})</option>
+                              <option key={eq.id} value={eq.id} className="bg-gray-900">{eq.name} ({eq.muscleGroup})</option>
                             ))}
                           </select>
                         </div>
                       </div>
-                      <div className="flex flex-col gap-2 flex-shrink-0">
+                      <div className="flex flex-col gap-1.5 flex-shrink-0">
                         <button
                           onClick={() => onMarkEasy(day.id, exercise.id)}
-                          className="glass-subtle hover:bg-yellow-500/20 text-yellow-300 text-xs font-medium py-2 px-3 rounded-xl border border-yellow-500/20 transition-all btn-press"
+                          className="glass-subtle hover:bg-green-500/10 text-green-400 text-[10px] sm:text-xs font-medium py-1.5 sm:py-2 px-2 sm:px-3 rounded-lg border border-green-500/10 transition-all btn-press"
                           title={t('easyHint', lang)}
                         >
-                          {t('easy', lang)}
+                          <span className="hidden sm:inline">{t('easy', lang)}</span>
+                          <span className="sm:hidden">⬆️</span>
                         </button>
                         <button
                           onClick={() => onMarkHard(day.id, exercise.id)}
-                          className="glass-subtle hover:bg-red-500/20 text-red-300 text-xs font-medium py-2 px-3 rounded-xl border border-red-500/20 transition-all btn-press"
+                          className="glass-subtle hover:bg-red-500/10 text-red-400 text-[10px] sm:text-xs font-medium py-1.5 sm:py-2 px-2 sm:px-3 rounded-lg border border-red-500/10 transition-all btn-press"
                           title={t('hardHint', lang)}
                         >
-                          {t('hard', lang)}
+                          <span className="hidden sm:inline">{t('hard', lang)}</span>
+                          <span className="sm:hidden">⬇️</span>
                         </button>
                       </div>
                     </div>

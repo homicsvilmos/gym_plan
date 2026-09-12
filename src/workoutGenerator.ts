@@ -90,44 +90,48 @@ export function generateWorkoutPlan(profile: UserProfile): WorkoutDay[] {
   const days: WorkoutDay[] = [];
   const daysPerWeek = profile.daysPerWeek || 3;
   
-  // Determine split based on days per week and fitness level
+  // Determine split based on days per week
   let split: { name: string; groups: string[] }[];
   
   if (daysPerWeek <= 2) {
+    // 1-2 nap: teljes test
     split = [
-      { name: 'A - Teljes test', groups: ['chest', 'back', 'legs', 'shoulders', 'core'] },
-      { name: 'B - Teljes test', groups: ['back', 'legs', 'chest', 'arms', 'core'] },
+      { name: 'A - Teljes test', groups: ['chest', 'back', 'legs', 'shoulders', 'arms', 'core'] },
+      { name: 'B - Teljes test', groups: ['legs', 'chest', 'back', 'arms', 'shoulders', 'core'] },
     ];
   } else if (daysPerWeek === 3) {
+    // 3 nap: kar/mell, hát, láb
     split = [
-      { name: 'Hétfő - Mell + Tricepsz', groups: ['chest', 'arms'] },
-      { name: 'Szerda - Hát + Bicepsz', groups: ['back', 'arms'] },
-      { name: 'Péntek - Láb + Váll', groups: ['legs', 'shoulders'] },
+      { name: 'Hétfő - Kar és Mell', groups: ['chest', 'arms'] },
+      { name: 'Szerda - Hát', groups: ['back', 'core'] },
+      { name: 'Péntek - Láb', groups: ['legs', 'shoulders'] },
     ];
   } else if (daysPerWeek === 4) {
+    // 4 nap: kar/mell, hát, láb, kar/mell
     split = [
-      { name: 'Hétfő - Mell + Váll', groups: ['chest', 'shoulders'] },
-      { name: 'Kedd - Hát + Kar', groups: ['back', 'arms'] },
-      { name: 'Csütörtök - Láb', groups: ['legs', 'core'] },
-      { name: 'Péntek - Felsőtest', groups: ['chest', 'back', 'arms'] },
+      { name: 'Hétfő - Kar és Mell', groups: ['chest', 'arms'] },
+      { name: 'Kedd - Hát', groups: ['back', 'core'] },
+      { name: 'Csütörtök - Láb', groups: ['legs', 'shoulders'] },
+      { name: 'Péntek - Kar és Mell', groups: ['arms', 'chest'] },
     ];
   } else if (daysPerWeek === 5) {
+    // 5 nap: kar/mell, hát, láb, kar/mell, hát
     split = [
-      { name: 'Hétfő - Mell', groups: ['chest', 'core'] },
-      { name: 'Kedd - Hát', groups: ['back'] },
-      { name: 'Szerda - Láb', groups: ['legs', 'core'] },
-      { name: 'Csütörtök - Váll', groups: ['shoulders'] },
-      { name: 'Péntek - Kar', groups: ['arms', 'core'] },
+      { name: 'Hétfő - Kar és Mell', groups: ['chest', 'arms'] },
+      { name: 'Kedd - Hát', groups: ['back', 'core'] },
+      { name: 'Szerda - Láb', groups: ['legs', 'shoulders'] },
+      { name: 'Csütörtök - Kar és Mell', groups: ['arms', 'chest'] },
+      { name: 'Péntek - Hát', groups: ['back', 'core'] },
     ];
   } else {
-    // 6 days - PPL x2
+    // 6 nap: kar/mell, hát, láb x2
     split = [
-      { name: 'Hétfő - Toló (Mell, Váll, Tricepsz)', groups: ['chest', 'shoulders', 'arms'] },
-      { name: 'Kedd - Húzó (Hát, Bicepsz)', groups: ['back', 'arms'] },
-      { name: 'Szerda - Láb', groups: ['legs', 'core'] },
-      { name: 'Csütörtök - Toló', groups: ['chest', 'shoulders', 'arms'] },
-      { name: 'Péntek - Húzó', groups: ['back', 'arms'] },
-      { name: 'Szombat - Láb + Törzs', groups: ['legs', 'core'] },
+      { name: 'Hétfő - Kar és Mell', groups: ['chest', 'arms'] },
+      { name: 'Kedd - Hát', groups: ['back', 'core'] },
+      { name: 'Szerda - Láb', groups: ['legs', 'shoulders'] },
+      { name: 'Csütörtök - Kar és Mell', groups: ['arms', 'chest'] },
+      { name: 'Péntek - Hát', groups: ['back', 'core'] },
+      { name: 'Szombat - Láb', groups: ['legs', 'shoulders'] },
     ];
   }
 
