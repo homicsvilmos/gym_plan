@@ -174,17 +174,7 @@ export default function LoginScreen({ onLogin, lang }: Props) {
             </button>
           </form>
 
-          {/* Hint */}
-          {mode === 'login' && (
-            <div className="mt-4 text-center">
-              <p className="text-white/30 text-xs">
-                {lang === 'hu' 
-                  ? 'Demo admin: Vili / 123456'
-                  : 'Demo admin: Vili / 123456'
-                }
-              </p>
-            </div>
-          )}
+
         </div>
       </div>
     </div>
