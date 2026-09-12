@@ -25,7 +25,7 @@ export default function WeightCalibration({ days, profile, onWeightUpdate, onMar
     const exercise = currentDay?.exercises.find(e => e.id === exerciseId);
     if (!exercise) return;
     
-    const calibrated = calibrateWeightEasy({ ...exercise, isEasy: true }, profile);
+    const calibrated = calibrateWeightEasy({ ...exercise, isEasy: true });
     onWeightUpdate(dayId, exerciseId, calibrated.weight);
     
     setCalibrationLog(prev => [
@@ -40,7 +40,7 @@ export default function WeightCalibration({ days, profile, onWeightUpdate, onMar
     const exercise = currentDay?.exercises.find(e => e.id === exerciseId);
     if (!exercise) return;
     
-    const calibrated = calibrateWeightHard({ ...exercise, isHard: true }, profile);
+    const calibrated = calibrateWeightHard({ ...exercise, isHard: true });
     onWeightUpdate(dayId, exerciseId, calibrated.weight);
     
     setCalibrationLog(prev => [

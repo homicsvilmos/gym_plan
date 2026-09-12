@@ -19,6 +19,7 @@ function App() {
   const [workoutDays, setWorkoutDays] = useState<WorkoutDay[]>([]);
   const [equipment, setEquipment] = useState<GymMachine[]>([]);
   const [planGenerated, setPlanGenerated] = useState(false);
+  const [planName, setPlanName] = useState<string>('');
   const [lang, setLang] = useState<'hu' | 'en'>('hu');
   const [showMenu, setShowMenu] = useState(false);
   const [showProfile, setShowProfile] = useState(false);
@@ -113,11 +114,12 @@ function App() {
     if (profile) {
       setIsRegenerating(true);
       setTimeout(() => {
-        const days = generateWorkoutPlan(profile);
-        setWorkoutDays(days);
+        const plan = generateWorkoutPlan(profile);
+        setWorkoutDays(plan.days);
+        setPlanName(plan.name);
         setPlanGenerated(true);
         if (currentUser) {
-          saveUserData(currentUser.id, { workoutPlan: days });
+          saveUserData(currentUser.id, { workoutPlan: plan.days });
         }
         setIsRegenerating(false);
       }, 600);
@@ -130,7 +132,7 @@ function App() {
       if (day.id === dayId) {
         const updatedExercises = day.exercises.map(ex => {
           if (ex.id === exerciseId) {
-            return calibrateWeightEasy({ ...ex, isEasy: true }, profile);
+            return calibrateWeightEasy({ ...ex, isEasy: true });
           }
           return ex;
         });
@@ -150,7 +152,7 @@ function App() {
       if (day.id === dayId) {
         const updatedExercises = day.exercises.map(ex => {
           if (ex.id === exerciseId) {
-            return calibrateWeightHard({ ...ex, isHard: true }, profile);
+            return calibrateWeightHard({ ...ex, isHard: true });
           }
           return ex;
         });
@@ -435,6 +437,7 @@ function App() {
                 equipment={equipment}
                 lang={lang}
                 isGenerating={isRegenerating}
+                planName={planName}
               />
             )}
             {mainView === 'equipment' && (

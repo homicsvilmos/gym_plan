@@ -60,11 +60,7 @@ export default function EquipmentGallery({ equipment, onAdd, onRemove, onRename,
     const alreadyAdded = equipment.some(e => e.id === defaultMachine.id);
     if (alreadyAdded) return;
     
-    onAdd({
-      ...defaultMachine,
-      originalName: defaultMachine.name,
-      imageUrl: '',
-    });
+    onAdd(defaultMachine);
   };
 
   const handleStartEdit = (machine: GymMachine) => {
