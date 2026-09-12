@@ -60,9 +60,11 @@ export default function WeightCalibration({ days, profile, onWeightUpdate, onMar
   if (!profile) {
     return (
       <div className="text-center py-16">
-        <span className="text-6xl mb-4 block">⚖️</span>
-        <h2 className="text-2xl font-bold mb-2">{t('setupProfileFirst', lang)}</h2>
-        <p className="text-gray-400">{t('setupProfileHint', lang)}</p>
+        <div className="glass-strong rounded-3xl p-12 max-w-lg mx-auto">
+          <span className="text-7xl mb-4 block">⚖️</span>
+          <h2 className="text-2xl font-bold mb-2 text-white text-shadow">{t('setupProfileFirst', lang)}</h2>
+          <p className="text-white/60">{t('setupProfileHint', lang)}</p>
+        </div>
       </div>
     );
   }
@@ -70,9 +72,11 @@ export default function WeightCalibration({ days, profile, onWeightUpdate, onMar
   if (days.length === 0) {
     return (
       <div className="text-center py-16">
-        <span className="text-6xl mb-4 block">⚖️</span>
-        <h2 className="text-2xl font-bold mb-2">{lang === 'hu' ? 'Még nincs edzésterved' : 'No workout plan yet'}</h2>
-        <p className="text-gray-400">{lang === 'hu' ? 'Generálj egy edzéstervet az Edzésterv fülön.' : 'Generate a workout plan in the Workout tab.'}</p>
+        <div className="glass-strong rounded-3xl p-12 max-w-lg mx-auto">
+          <span className="text-7xl mb-4 block">⚖️</span>
+          <h2 className="text-2xl font-bold mb-2 text-white text-shadow">{lang === 'hu' ? 'Még nincs edzésterved' : 'No workout plan yet'}</h2>
+          <p className="text-white/60">{lang === 'hu' ? 'Generálj egy edzéstervet az Edzésterv fülön.' : 'Generate a workout plan in the Workout tab.'}</p>
+        </div>
       </div>
     );
   }
@@ -80,10 +84,11 @@ export default function WeightCalibration({ days, profile, onWeightUpdate, onMar
   return (
     <div className="space-y-6">
       <div>
-        <h2 className="text-2xl font-bold flex items-center gap-2">
-          <span>⚖️</span> {t('weightCalibration', lang)}
+        <h2 className="text-2xl font-bold text-white text-shadow flex items-center gap-3">
+          <div className="w-12 h-12 rounded-xl glass flex items-center justify-center text-2xl">⚖️</div>
+          {t('weightCalibration', lang)}
         </h2>
-        <p className="text-gray-400 text-sm mt-1">{t('calibrationHint', lang)}</p>
+        <p className="text-white/60 text-sm mt-2">{t('calibrationHint', lang)}</p>
       </div>
 
       {/* Day Selector */}
@@ -92,10 +97,10 @@ export default function WeightCalibration({ days, profile, onWeightUpdate, onMar
           <button
             key={day.id}
             onClick={() => setSelectedDay(day.id)}
-            className={`px-4 py-2 rounded-lg text-sm font-medium whitespace-nowrap transition-all ${
+            className={`px-5 py-2.5 rounded-xl text-sm font-medium whitespace-nowrap transition-all btn-press ${
               selectedDay === day.id
-                ? 'bg-orange-500 text-white'
-                : 'bg-gray-700/50 text-gray-400 hover:bg-gray-700 hover:text-white'
+                ? 'glass text-white shadow-lg'
+                : 'glass-subtle text-white/50 hover:text-white/80'
             }`}
           >
             {day.name}
@@ -121,35 +126,35 @@ export default function WeightCalibration({ days, profile, onWeightUpdate, onMar
       )}
 
       {/* Calibration History */}
-      <div className="bg-gray-800/50 rounded-xl border border-gray-700 p-4">
+      <div className="glass-strong rounded-2xl p-5">
         <button
           onClick={() => setShowHistory(!showHistory)}
           className="flex items-center justify-between w-full"
         >
-          <h3 className="font-bold flex items-center gap-2">
+          <h3 className="font-bold flex items-center gap-2 text-white">
             <span>📊</span> {t('calibrationHistory', lang)}
           </h3>
-          <span className={`text-gray-400 transition-transform ${showHistory ? 'rotate-180' : ''}`}>▼</span>
+          <span className={`text-white/40 transition-transform ${showHistory ? 'rotate-180' : ''}`}>▼</span>
         </button>
         
         {showHistory && (
           <div className="mt-4 space-y-2">
             {calibrationLog.length === 0 ? (
-              <p className="text-gray-400 text-sm text-center py-4">{t('noCalibration', lang)}</p>
+              <p className="text-white/40 text-sm text-center py-4">{t('noCalibration', lang)}</p>
             ) : (
               calibrationLog.map((log, i) => (
-                <div key={i} className="flex items-center justify-between bg-gray-700/30 rounded-lg p-3 text-sm">
+                <div key={i} className="glass-subtle rounded-xl p-3 text-sm flex items-center justify-between">
                   <div className="flex items-center gap-2">
-                    <span className={`text-xs px-1.5 py-0.5 rounded ${log.type === 'easy' ? 'bg-green-500/20 text-green-400' : 'bg-red-500/20 text-red-400'}`}>
+                    <span className={`text-xs px-2 py-0.5 rounded-full ${log.type === 'easy' ? 'glass text-green-400' : 'glass text-red-400'}`}>
                       {log.type === 'easy' ? '⬆️' : '⬇️'}
                     </span>
-                    <span className="font-medium">{log.exercise}</span>
-                    <span className="text-gray-400 ml-2">{log.date}</span>
+                    <span className="font-medium text-white">{log.exercise}</span>
+                    <span className="text-white/40 ml-2">{log.date}</span>
                   </div>
                   <div className="flex items-center gap-2">
-                    <span className="text-gray-400">{log.from}kg</span>
+                    <span className="text-white/60">{log.from}kg</span>
                     <span className={log.type === 'easy' ? 'text-green-400' : 'text-red-400'}>→</span>
-                    <span className={`font-semibold ${log.type === 'easy' ? 'text-green-400' : 'text-red-400'}`}>{log.to}kg</span>
+                    <span className={`font-bold ${log.type === 'easy' ? 'text-green-400' : 'text-red-400'}`}>{log.to}kg</span>
                   </div>
                 </div>
               ))
@@ -159,11 +164,11 @@ export default function WeightCalibration({ days, profile, onWeightUpdate, onMar
       </div>
 
       {/* Tips */}
-      <div className="bg-gradient-to-r from-orange-500/10 to-red-500/10 rounded-xl border border-orange-500/20 p-4">
-        <h3 className="font-bold text-orange-300 flex items-center gap-2 mb-2">
+      <div className="glass rounded-2xl p-5 border border-orange-500/20">
+        <h3 className="font-bold text-orange-300 flex items-center gap-2 mb-3">
           <span>💡</span> {t('tips', lang)}
         </h3>
-        <ul className="text-sm text-gray-300 space-y-1">
+        <ul className="text-sm text-white/70 space-y-2">
           <li>{t('tip1', lang)}</li>
           <li>{t('tip2', lang)}</li>
           <li>{t('tip3', lang)}</li>
@@ -188,19 +193,19 @@ function CalibrationCard({ exercise, dayId, onAutoEasy, onAutoHard, onManualUpda
   const [manualWeight, setManualWeight] = useState(exercise.weight);
 
   return (
-    <div className="bg-gray-800/50 rounded-xl border border-gray-700 p-4">
-      <div className="flex items-center justify-between mb-3">
+    <div className="glass-strong rounded-2xl p-5 hover-lift">
+      <div className="flex items-center justify-between mb-4">
         <div>
-          <h4 className="font-bold">{exercise.name}</h4>
-          <p className="text-xs text-gray-400">{exercise.muscleGroup} • {exercise.sets}×{exercise.reps}</p>
+          <h4 className="font-bold text-lg text-white">{exercise.name}</h4>
+          <p className="text-xs text-white/50">{exercise.muscleGroup} • {exercise.sets}×{exercise.reps}</p>
         </div>
         <div className="text-right">
-          <div className="text-2xl font-bold text-orange-400">{exercise.weight} kg</div>
+          <div className="text-3xl font-bold bg-gradient-to-r from-orange-400 to-red-500 bg-clip-text text-transparent">{exercise.weight} kg</div>
         </div>
       </div>
 
       {/* Weight Slider */}
-      <div className="mb-3">
+      <div className="mb-4">
         <input
           type="range"
           min={Math.max(0, exercise.weight - 20)}
@@ -208,9 +213,9 @@ function CalibrationCard({ exercise, dayId, onAutoEasy, onAutoHard, onManualUpda
           step={2.5}
           value={manualWeight}
           onChange={e => setManualWeight(Number(e.target.value))}
-          className="w-full h-2 bg-gray-700 rounded-lg appearance-none cursor-pointer accent-orange-500"
+          className="w-full"
         />
-        <div className="flex justify-between text-xs text-gray-500 mt-1">
+        <div className="flex justify-between text-xs text-white/30 mt-1">
           <span>{Math.max(0, exercise.weight - 20)}kg</span>
           <span>{exercise.weight + 30}kg</span>
         </div>
@@ -220,41 +225,41 @@ function CalibrationCard({ exercise, dayId, onAutoEasy, onAutoHard, onManualUpda
       <div className="flex gap-2 flex-wrap">
         <button
           onClick={() => onAutoEasy(dayId, exercise.id, exercise.name, exercise.weight)}
-          className="flex-1 min-w-[120px] bg-green-500/20 hover:bg-green-500/30 text-green-300 text-sm font-medium py-2 px-3 rounded-lg border border-green-500/30 transition-all"
+          className="flex-1 min-w-[120px] glass-subtle hover:bg-green-500/20 text-green-300 text-sm font-medium py-2.5 px-3 rounded-xl border border-green-500/20 transition-all btn-press"
         >
           {t('autoEasy', lang)}
         </button>
         <button
           onClick={() => onAutoHard(dayId, exercise.id, exercise.name, exercise.weight)}
-          className="flex-1 min-w-[120px] bg-red-500/20 hover:bg-red-500/30 text-red-300 text-sm font-medium py-2 px-3 rounded-lg border border-red-500/30 transition-all"
+          className="flex-1 min-w-[120px] glass-subtle hover:bg-red-500/20 text-red-300 text-sm font-medium py-2.5 px-3 rounded-xl border border-red-500/20 transition-all btn-press"
         >
           {t('autoHard', lang)}
         </button>
         <button
           onClick={() => setShowManual(!showManual)}
-          className="bg-gray-700 hover:bg-gray-600 text-gray-300 text-sm font-medium py-2 px-3 rounded-lg transition-all"
+          className="glass-subtle hover:bg-white/10 text-white/80 text-sm font-medium py-2.5 px-3 rounded-xl transition-all btn-press"
         >
           {t('manual', lang)}
         </button>
       </div>
 
       {showManual && (
-        <div className="mt-3 flex items-center gap-2">
+        <div className="mt-4 flex items-center gap-3">
           <input
             type="number"
             value={manualWeight}
             onChange={e => setManualWeight(Number(e.target.value))}
-            className="w-24 bg-gray-700 border border-gray-600 rounded-lg px-3 py-2 text-white text-center"
+            className="w-24 glass-subtle rounded-xl px-3 py-2.5 text-white text-center focus:outline-none focus:ring-1 focus:ring-white/20"
             step={2.5}
             min={0}
           />
-          <span className="text-gray-400">kg</span>
+          <span className="text-white/60">kg</span>
           <button
             onClick={() => {
               onManualUpdate(dayId, exercise.id, exercise.name, exercise.weight, manualWeight);
               setShowManual(false);
             }}
-            className="bg-orange-500 hover:bg-orange-600 text-white text-sm font-medium py-2 px-4 rounded-lg transition-all"
+            className="glass-strong hover:bg-white/15 text-white text-sm font-medium py-2.5 px-4 rounded-xl transition-all btn-press"
           >
             {t('set', lang)}
           </button>

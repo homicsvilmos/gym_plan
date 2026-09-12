@@ -89,21 +89,21 @@ export default function EquipmentGallery({ equipment, onAdd, onRemove, onRename,
 
   return (
     <div>
-      <div className="flex items-center justify-between mb-6 flex-wrap gap-2">
+      <div className="flex items-center justify-between mb-6 flex-wrap gap-3">
         <div>
-          <h2 className="text-2xl font-bold">{t('gymMachines', lang)}</h2>
-          <p className="text-gray-400 text-sm">{t('gymMachinesSubtitle', lang)}</p>
+          <h2 className="text-2xl font-bold text-white text-shadow">{t('gymMachines', lang)}</h2>
+          <p className="text-white/60 text-sm">{t('gymMachinesSubtitle', lang)}</p>
         </div>
         <div className="flex gap-2">
           <button
             onClick={() => setShowDefaults(!showDefaults)}
-            className="bg-gray-700 hover:bg-gray-600 text-white font-medium py-2 px-4 rounded-lg transition-all text-sm"
+            className="glass-subtle hover:bg-white/10 text-white font-medium py-2 px-4 rounded-xl transition-all text-sm btn-press"
           >
             📋 {t('defaultMachines', lang)}
           </button>
           <button
             onClick={() => setShowForm(!showForm)}
-            className="bg-gradient-to-r from-orange-500 to-red-600 text-white font-medium py-2 px-4 rounded-lg hover:from-orange-600 hover:to-red-700 transition-all text-sm"
+            className="glass-strong hover:bg-white/15 text-white font-medium py-2 px-4 rounded-xl transition-all text-sm btn-press"
           >
             {showForm ? t('cancel', lang) : t('addNew', lang)}
           </button>
@@ -112,8 +112,8 @@ export default function EquipmentGallery({ equipment, onAdd, onRemove, onRename,
 
       {/* Default Machines Section */}
       {showDefaults && (
-        <div className="bg-gray-800/50 rounded-xl border border-gray-700 p-4 mb-6">
-          <h3 className="font-bold text-lg mb-3 flex items-center gap-2">
+        <div className="glass-strong rounded-2xl p-6 mb-6">
+          <h3 className="font-bold text-lg mb-4 flex items-center gap-2 text-white">
             <span>📋</span> {t('defaultMachines', lang)}
           </h3>
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-2">
@@ -122,16 +122,16 @@ export default function EquipmentGallery({ equipment, onAdd, onRemove, onRename,
                 key={machine.id}
                 onClick={() => handleAddDefault(machine)}
                 disabled={isAdded(machine.id)}
-                className={`p-2 rounded-lg border text-left text-xs transition-all ${
+                className={`p-3 rounded-xl text-left text-xs transition-all btn-press ${
                   isAdded(machine.id)
-                    ? 'bg-green-500/10 border-green-500/30 text-green-400 cursor-default'
-                    : 'bg-gray-700/30 border-gray-600 text-gray-300 hover:border-orange-500 hover:bg-gray-700/50'
+                    ? 'glass-subtle text-green-400 cursor-default border border-green-500/20'
+                    : 'glass-subtle text-white/80 hover:bg-white/10 hover:text-white'
                 }`}
               >
                 <div className="font-medium">{machine.name}</div>
-                <div className="text-gray-500 text-[10px]">{machine.muscleGroup}</div>
+                <div className="text-white/40 text-[10px] mt-0.5">{machine.muscleGroup}</div>
                 {isAdded(machine.id) && (
-                  <div className="text-green-400 text-[10px] mt-0.5">{t('added', lang)}</div>
+                  <div className="text-green-400 text-[10px] mt-1">{t('added', lang)}</div>
                 )}
               </button>
             ))}
@@ -141,50 +141,50 @@ export default function EquipmentGallery({ equipment, onAdd, onRemove, onRename,
 
       {/* Add Custom Form */}
       {showForm && (
-        <div className="bg-gray-800/50 rounded-xl border border-gray-700 p-6 mb-6">
-          <h3 className="font-bold text-lg mb-1">{t('customMachine', lang)}</h3>
-          <p className="text-gray-400 text-sm mb-4">{t('customMachineHint', lang)}</p>
+        <div className="glass-strong rounded-2xl p-6 mb-6">
+          <h3 className="font-bold text-lg mb-1 text-white">{t('customMachine', lang)}</h3>
+          <p className="text-white/60 text-sm mb-4">{t('customMachineHint', lang)}</p>
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
-              <label className="block text-sm font-medium text-gray-300 mb-1">{t('machineName', lang)}</label>
+              <label className="block text-sm font-medium text-white/80 mb-2">{t('machineName', lang)}</label>
               <input
                 type="text"
                 value={name}
                 onChange={e => setName(e.target.value)}
-                className="w-full bg-gray-700/50 border border-gray-600 rounded-lg px-4 py-2 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-orange-500"
+                className="w-full glass-subtle rounded-xl px-4 py-3 text-white placeholder-white/30 focus:outline-none focus:ring-2 focus:ring-white/20"
                 placeholder={t('machineNamePlaceholder', lang)}
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-300 mb-1">{t('muscleGroup', lang)}</label>
+              <label className="block text-sm font-medium text-white/80 mb-2">{t('muscleGroup', lang)}</label>
               <select
                 value={muscleGroup}
                 onChange={e => setMuscleGroup(e.target.value)}
-                className="w-full bg-gray-700/50 border border-gray-600 rounded-lg px-4 py-2 text-white focus:outline-none focus:ring-2 focus:ring-orange-500"
+                className="w-full glass-subtle rounded-xl px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-white/20"
               >
-                <option value="">{t('chooseOne', lang)}</option>
+                <option value="" className="bg-gray-800">{t('chooseOne', lang)}</option>
                 {muscleGroups.map(g => (
-                  <option key={g} value={g}>{g}</option>
+                  <option key={g} value={g} className="bg-gray-800">{g}</option>
                 ))}
               </select>
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-300 mb-1">{t('uploadImage', lang)}</label>
+              <label className="block text-sm font-medium text-white/80 mb-2">{t('uploadImage', lang)}</label>
               <input
                 type="file"
                 accept="image/*"
                 onChange={handleImageUpload}
-                className="w-full bg-gray-700/50 border border-gray-600 rounded-lg px-4 py-2 text-white"
+                className="w-full glass-subtle rounded-xl px-4 py-3 text-white"
               />
               {imageUrl && (
-                <div className="mt-2">
-                  <img src={imageUrl} alt={t('preview', lang)} className="h-32 w-32 object-cover rounded-lg border border-gray-600" />
+                <div className="mt-3">
+                  <img src={imageUrl} alt={t('preview', lang)} className="h-32 w-32 object-cover rounded-xl glass" />
                 </div>
               )}
             </div>
             <button
               type="submit"
-              className="w-full bg-gradient-to-r from-orange-500 to-red-600 text-white font-bold py-2 px-4 rounded-lg hover:from-orange-600 hover:to-red-700 transition-all"
+              className="w-full glass-strong text-white font-bold py-3 px-4 rounded-xl hover:bg-white/15 transition-all btn-press"
             >
               {t('add', lang)}
             </button>
@@ -194,10 +194,10 @@ export default function EquipmentGallery({ equipment, onAdd, onRemove, onRename,
 
       {/* Equipment Grid */}
       {equipment.length === 0 ? (
-        <div className="text-center py-16 bg-gray-800/30 rounded-xl border border-gray-700 border-dashed">
-          <span className="text-6xl mb-4 block">🏋️</span>
-          <h3 className="text-xl font-bold mb-2">{t('noMachines', lang)}</h3>
-          <p className="text-gray-400">{t('noMachinesHint', lang)}</p>
+        <div className="text-center py-16 glass-subtle rounded-2xl border border-white/10 border-dashed">
+          <span className="text-7xl mb-4 block">🏋️</span>
+          <h3 className="text-xl font-bold mb-2 text-white">{t('noMachines', lang)}</h3>
+          <p className="text-white/60">{t('noMachinesHint', lang)}</p>
         </div>
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -207,48 +207,48 @@ export default function EquipmentGallery({ equipment, onAdd, onRemove, onRename,
             const isRenamed = item.name !== originalName;
             
             return (
-              <div key={item.id} className="bg-gray-800/50 rounded-xl border border-gray-700 overflow-hidden group">
-                <div className="relative h-40 overflow-hidden bg-gray-700/50 flex items-center justify-center">
+              <div key={item.id} className="glass-strong rounded-2xl overflow-hidden hover-lift group">
+                <div className="relative h-40 overflow-hidden bg-gradient-to-br from-white/5 to-white/10 flex items-center justify-center">
                   {item.imageUrl ? (
                     <img
                       src={item.imageUrl}
                       alt={item.name}
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                     />
                   ) : (
                     <div className="text-center p-4">
-                      <span className="text-4xl">🏋️</span>
-                      <p className="text-xs text-gray-500 mt-1">{item.name}</p>
+                      <span className="text-5xl">🏋️</span>
+                      <p className="text-xs text-white/40 mt-2">{item.name}</p>
                     </div>
                   )}
-                  <div className="absolute top-2 right-2 flex gap-1">
+                  <div className="absolute top-3 right-3 flex gap-2">
                     <button
                       onClick={() => isEditing ? handleSaveEdit() : handleStartEdit(item)}
-                      className="bg-blue-500/80 hover:bg-blue-500 text-white w-8 h-8 rounded-full flex items-center justify-center text-sm transition-all opacity-0 group-hover:opacity-100"
-                      title={lang === 'hu' ? 'Átnevezés' : 'Rename'}
+                      className="glass w-9 h-9 rounded-full flex items-center justify-center text-sm transition-all opacity-0 group-hover:opacity-100 hover:bg-white/20 btn-press"
+                      title={t('rename', lang)}
                     >
                       {isEditing ? '✓' : '✏️'}
                     </button>
                     <button
                       onClick={() => onRemove(item.id)}
-                      className="bg-red-500/80 hover:bg-red-500 text-white w-8 h-8 rounded-full flex items-center justify-center text-sm transition-all opacity-0 group-hover:opacity-100"
+                      className="glass w-9 h-9 rounded-full flex items-center justify-center text-sm transition-all opacity-0 group-hover:opacity-100 hover:bg-red-500/30 btn-press"
                     >
                       ✕
                     </button>
                   </div>
-                  <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-gray-900/90 to-transparent p-3">
-                    <div className="flex items-center gap-2">
-                      <span className="text-xs bg-orange-500/80 px-2 py-0.5 rounded-full">
+                  <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/60 to-transparent p-4">
+                    <div className="flex items-center gap-2 flex-wrap">
+                      <span className="text-xs glass px-2 py-1 rounded-full text-white/90">
                         {item.muscleGroup}
                       </span>
                       {item.isCustom && (
-                        <span className="text-xs bg-purple-500/80 px-2 py-0.5 rounded-full">
+                        <span className="text-xs glass px-2 py-1 rounded-full text-purple-300">
                           {lang === 'hu' ? 'Egyedi' : 'Custom'}
                         </span>
                       )}
                       {isRenamed && (
-                        <span className="text-xs bg-blue-500/80 px-2 py-0.5 rounded-full">
-                          {lang === 'hu' ? 'Átnevezve' : 'Renamed'}
+                        <span className="text-xs glass px-2 py-1 rounded-full text-blue-300">
+                          {t('renamed', lang)}
                         </span>
                       )}
                     </div>
@@ -261,7 +261,7 @@ export default function EquipmentGallery({ equipment, onAdd, onRemove, onRename,
                         type="text"
                         value={editName}
                         onChange={e => setEditName(e.target.value)}
-                        className="flex-1 bg-gray-700 border border-gray-500 rounded px-2 py-1 text-white text-sm focus:outline-none focus:ring-1 focus:ring-orange-500"
+                        className="flex-1 glass-subtle rounded-lg px-3 py-2 text-white text-sm focus:outline-none focus:ring-1 focus:ring-white/20"
                         autoFocus
                         onKeyDown={e => {
                           if (e.key === 'Enter') handleSaveEdit();
@@ -270,18 +270,18 @@ export default function EquipmentGallery({ equipment, onAdd, onRemove, onRename,
                       />
                       <button
                         onClick={handleCancelEdit}
-                        className="text-gray-400 hover:text-white text-sm px-2"
+                        className="text-white/40 hover:text-white text-sm px-2"
                       >
                         ✕
                       </button>
                     </div>
                   ) : (
                     <div>
-                      <h3 className="font-bold">{item.name}</h3>
+                      <h3 className="font-bold text-white">{item.name}</h3>
                       {isRenamed && (
                         <div className="flex items-center gap-2 mt-1">
-                          <span className="text-xs text-gray-500">
-                            {t('original', lang)}: {item.originalName}
+                          <span className="text-xs text-white/40">
+                            {t('original', lang)}: {originalName}
                           </span>
                           <button
                             onClick={() => onResetName(item.id)}

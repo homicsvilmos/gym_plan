@@ -22,7 +22,6 @@ function App() {
     if (saved) {
       const parsed = JSON.parse(saved);
       setProfile(parsed);
-      // Set language
       if (parsed.language === 'system') {
         setLang(getSystemLanguage());
       } else if (parsed.language === 'en') {
@@ -31,7 +30,6 @@ function App() {
         setLang('hu');
       }
     } else {
-      // Default to system language
       setLang(getSystemLanguage());
     }
     const savedPlan = localStorage.getItem('gymWorkoutPlan');
@@ -48,7 +46,6 @@ function App() {
   const handleProfileSave = (newProfile: UserProfile) => {
     setProfile(newProfile);
     localStorage.setItem('gymProfile', JSON.stringify(newProfile));
-    // Update language
     if (newProfile.language === 'system') {
       setLang(getSystemLanguage());
     } else if (newProfile.language === 'en') {
@@ -143,12 +140,10 @@ function App() {
     setEquipment(updated);
     localStorage.setItem('gymEquipment', JSON.stringify(updated));
 
-    // Auto-assign machine to exercises in workout plan
     if (workoutDays.length > 0) {
       const updatedDays = workoutDays.map(day => ({
         ...day,
         exercises: day.exercises.map(exercise => {
-          // If this exercise matches the machine mapping and doesn't have equipment assigned yet
           const mappedMachineId = exerciseToMachineMap[exercise.id];
           if (mappedMachineId === item.id && !exercise.assignedEquipment) {
             return { ...exercise, assignedEquipment: item.id };
@@ -189,100 +184,118 @@ function App() {
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 text-white">
-      {/* Header */}
-      <header className="bg-gray-900/80 backdrop-blur-sm border-b border-gray-700 sticky top-0 z-50">
-        <div className="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <span className="text-3xl">🏋️</span>
-            <div>
-              <h1 className="text-xl font-bold bg-gradient-to-r from-orange-400 to-red-500 bg-clip-text text-transparent">
-                {t('appName', lang)}
-              </h1>
-              <p className="text-xs text-gray-400">{t('appSubtitle', lang)}</p>
-            </div>
-          </div>
-          {profile && (
-            <div className="hidden sm:flex items-center gap-4 text-sm">
-              <div className="text-gray-400">
-                <span className="text-white font-semibold">{profile.weight || '—'}kg</span> / {profile.height || '—'}cm
+    <div className="min-h-screen relative overflow-hidden">
+      {/* Animated gradient background */}
+      <div className="fixed inset-0 animated-gradient bg-gradient-to-br from-indigo-950 via-purple-900 to-slate-900" />
+      
+      {/* Floating orbs for depth */}
+      <div className="fixed inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute top-[-20%] left-[-10%] w-[600px] h-[600px] rounded-full bg-purple-600/20 blur-[120px]" />
+        <div className="absolute bottom-[-20%] right-[-10%] w-[500px] h-[500px] rounded-full bg-blue-600/20 blur-[120px]" />
+        <div className="absolute top-[40%] right-[20%] w-[400px] h-[400px] rounded-full bg-orange-500/10 blur-[100px]" />
+        <div className="absolute bottom-[20%] left-[30%] w-[350px] h-[350px] rounded-full bg-pink-500/10 blur-[100px]" />
+      </div>
+
+      {/* Content */}
+      <div className="relative z-10 min-h-screen flex flex-col">
+        {/* Header */}
+        <header className="glass-strong sticky top-0 z-50">
+          <div className="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 rounded-xl glass flex items-center justify-center text-xl">
+                🏋️
               </div>
-              {bmi && typeof profile.weight === 'number' && typeof profile.height === 'number' && (
-                <div className={`font-semibold ${bmi.color}`}>
-                  BMI: {bmi.bmi} ({bmi.category})
-                </div>
-              )}
+              <div>
+                <h1 className="text-xl font-bold text-white text-shadow bg-gradient-to-r from-white to-white/80 bg-clip-text text-transparent">
+                  {t('appName', lang)}
+                </h1>
+                <p className="text-xs text-white/60">{t('appSubtitle', lang)}</p>
+              </div>
             </div>
-          )}
-        </div>
-      </header>
-
-      {/* Navigation */}
-      <nav className="bg-gray-800/50 border-b border-gray-700">
-        <div className="max-w-7xl mx-auto px-4">
-          <div className="flex overflow-x-auto">
-            {tabs.map(tab => (
-              <button
-                key={tab.id}
-                onClick={() => setActiveTab(tab.id)}
-                className={`flex items-center gap-2 px-4 py-3 text-sm font-medium whitespace-nowrap border-b-2 transition-all ${
-                  activeTab === tab.id
-                    ? 'border-orange-500 text-orange-400'
-                    : 'border-transparent text-gray-400 hover:text-gray-200'
-                }`}
-              >
-                <span>{tab.icon}</span>
-                <span>{t(tab.labelKey, lang)}</span>
-              </button>
-            ))}
+            {profile && (
+              <div className="hidden sm:flex items-center gap-4 text-sm">
+                <div className="glass-subtle rounded-full px-3 py-1.5 text-white/80">
+                  <span className="text-white font-semibold">{profile.weight || '—'}kg</span>
+                  <span className="text-white/40 mx-1">/</span>
+                  <span>{profile.height || '—'}cm</span>
+                </div>
+                {bmi && typeof profile.weight === 'number' && typeof profile.height === 'number' && (
+                  <div className={`glass-subtle rounded-full px-3 py-1.5 font-semibold ${bmi.color}`}>
+                    BMI: {bmi.bmi}
+                  </div>
+                )}
+              </div>
+            )}
           </div>
-        </div>
-      </nav>
+        </header>
 
-      {/* Main Content */}
-      <main className="max-w-7xl mx-auto px-4 py-6">
-        {activeTab === 'profile' && (
-          <ProfileSetup
-            profile={profile}
-            onSave={handleProfileSave}
-            lang={lang}
-          />
-        )}
-        {activeTab === 'workout' && (
-          <WorkoutPlanView
-            days={workoutDays}
-            planGenerated={planGenerated}
-            profile={profile}
-            onGenerate={handleGeneratePlan}
-            onMarkEasy={handleMarkEasy}
-            onMarkHard={handleMarkHard}
-            onWeightUpdate={handleWeightUpdate}
-            onAssignEquipment={handleAssignEquipment}
-            equipment={equipment}
-            lang={lang}
-          />
-        )}
-        {activeTab === 'equipment' && (
-          <EquipmentGallery
-            equipment={equipment}
-            onAdd={handleAddEquipment}
-            onRemove={handleRemoveEquipment}
-            onRename={handleRenameEquipment}
-            onResetName={handleResetEquipmentName}
-            lang={lang}
-          />
-        )}
-        {activeTab === 'calibration' && (
-          <WeightCalibration
-            days={workoutDays}
-            profile={profile}
-            onWeightUpdate={handleWeightUpdate}
-            onMarkEasy={handleMarkEasy}
-            onMarkHard={handleMarkHard}
-            lang={lang}
-          />
-        )}
-      </main>
+        {/* Navigation */}
+        <nav className="glass-subtle border-b border-white/10">
+          <div className="max-w-7xl mx-auto px-4">
+            <div className="flex overflow-x-auto gap-1 py-1">
+              {tabs.map(tab => (
+                <button
+                  key={tab.id}
+                  onClick={() => setActiveTab(tab.id)}
+                  className={`flex items-center gap-2 px-4 py-2.5 text-sm font-medium whitespace-nowrap rounded-xl transition-all ${
+                    activeTab === tab.id
+                      ? 'glass text-white shadow-lg'
+                      : 'text-white/50 hover:text-white/80 hover:bg-white/5'
+                  }`}
+                >
+                  <span className="text-base">{tab.icon}</span>
+                  <span>{t(tab.labelKey, lang)}</span>
+                </button>
+              ))}
+            </div>
+          </div>
+        </nav>
+
+        {/* Main Content */}
+        <main className="flex-1 max-w-7xl mx-auto px-4 py-6 w-full">
+          {activeTab === 'profile' && (
+            <ProfileSetup
+              profile={profile}
+              onSave={handleProfileSave}
+              lang={lang}
+            />
+          )}
+          {activeTab === 'workout' && (
+            <WorkoutPlanView
+              days={workoutDays}
+              planGenerated={planGenerated}
+              profile={profile}
+              onGenerate={handleGeneratePlan}
+              onMarkEasy={handleMarkEasy}
+              onMarkHard={handleMarkHard}
+              onWeightUpdate={handleWeightUpdate}
+              onAssignEquipment={handleAssignEquipment}
+              equipment={equipment}
+              lang={lang}
+            />
+          )}
+          {activeTab === 'equipment' && (
+            <EquipmentGallery
+              equipment={equipment}
+              onAdd={handleAddEquipment}
+              onRemove={handleRemoveEquipment}
+              onRename={handleRenameEquipment}
+              onResetName={handleResetEquipmentName}
+              lang={lang}
+            />
+          )}
+          {activeTab === 'calibration' && (
+            <WeightCalibration
+              days={workoutDays}
+              profile={profile}
+              onWeightUpdate={handleWeightUpdate}
+              onMarkEasy={handleMarkEasy}
+              onMarkHard={handleMarkHard}
+              lang={lang}
+            />
+          )}
+        </main>
+      </div>
     </div>
   );
 }
