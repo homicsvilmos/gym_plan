@@ -220,13 +220,13 @@ export default function EquipmentGallery({ equipment, onAdd, onRemove, onRename,
         </div>
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-          {equipment.map(item => {
+          {equipment.map((item, index) => {
             const isEditing = editingId === item.id;
             const originalName = item.originalName || item.name;
             const isRenamed = item.name !== originalName;
             
             return (
-              <div key={item.id} className="glass-strong rounded-2xl overflow-hidden hover-lift group">
+              <div key={item.id} className="glass-strong rounded-2xl overflow-hidden hover-lift group stagger-item" style={{ animationDelay: `${index * 0.05}s` }}>
                 <div className="relative h-40 overflow-hidden bg-gradient-to-br from-white/5 to-white/10 flex items-center justify-center">
                   {item.imageUrl ? (
                     <img

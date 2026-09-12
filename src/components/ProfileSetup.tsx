@@ -130,8 +130,8 @@ export default function ProfileSetup({ profile, onSave, lang }: Props) {
                   onClick={() => setForm({ ...form, daysPerWeek: day })}
                   className={`py-3 rounded-xl text-center font-bold transition-all btn-press text-sm sm:text-base ${
                     form.daysPerWeek === day
-                      ? 'glass-blue text-blue-300 shadow-lg'
-                      : 'glass-subtle text-white/40 hover:text-white/70'
+                      ? 'glass-blue text-blue-300 shadow-lg animate-scale-in-bounce'
+                      : 'glass-subtle text-white/40 hover:text-white/70 hover:scale-105'
                   }`}
                 >
                   {day}
@@ -160,8 +160,8 @@ export default function ProfileSetup({ profile, onSave, lang }: Props) {
                   onClick={() => setForm({ ...form, fitnessLevel: level.value as UserProfile['fitnessLevel'] })}
                   className={`p-3 sm:p-4 rounded-xl text-center transition-all btn-press ${
                     form.fitnessLevel === level.value
-                      ? 'glass-blue text-blue-300 shadow-lg'
-                      : 'glass-subtle text-white/40 hover:text-white/70'
+                      ? 'glass-blue text-blue-300 shadow-lg animate-scale-in-bounce'
+                      : 'glass-subtle text-white/40 hover:text-white/70 hover:scale-105'
                   }`}
                 >
                   <div className="w-8 h-8 mx-auto mb-2">
@@ -191,8 +191,8 @@ export default function ProfileSetup({ profile, onSave, lang }: Props) {
                   onClick={() => setForm({ ...form, goal: goal.value as UserProfile['goal'] })}
                   className={`p-3 sm:p-4 rounded-xl text-center transition-all btn-press ${
                     form.goal === goal.value
-                      ? 'glass-blue text-blue-300 shadow-lg'
-                      : 'glass-subtle text-white/40 hover:text-white/70'
+                      ? 'glass-blue text-blue-300 shadow-lg animate-scale-in-bounce'
+                      : 'glass-subtle text-white/40 hover:text-white/70 hover:scale-105'
                   }`}
                 >
                   <div className="w-7 h-7 mx-auto mb-1.5">
@@ -221,8 +221,8 @@ export default function ProfileSetup({ profile, onSave, lang }: Props) {
                   onClick={() => setForm({ ...form, language: l.value as UserProfile['language'] })}
                   className={`p-3 rounded-xl text-center transition-all btn-press ${
                     form.language === l.value
-                      ? 'glass-blue text-blue-300 shadow-lg'
-                      : 'glass-subtle text-white/40 hover:text-white/70'
+                      ? 'glass-blue text-blue-300 shadow-lg animate-scale-in-bounce'
+                      : 'glass-subtle text-white/40 hover:text-white/70 hover:scale-105'
                   }`}
                 >
                   <div className="text-xs sm:text-sm font-medium">{l.label}</div>
@@ -234,7 +234,7 @@ export default function ProfileSetup({ profile, onSave, lang }: Props) {
           {/* Submit */}
           <button
             type="submit"
-            className="w-full glass-blue text-blue-300 font-bold py-4 px-6 rounded-xl hover:bg-blue-500/20 transition-all transform hover:scale-[1.01] active:scale-[0.99] shadow-lg btn-press"
+            className="w-full glass-blue text-blue-300 font-bold py-4 px-6 rounded-xl hover:bg-blue-500/20 transition-all transform hover:scale-[1.02] active:scale-[0.97] shadow-lg btn-press ripple-container"
           >
             {profile ? t('updateProfile', lang) : t('saveProfile', lang)}
           </button>

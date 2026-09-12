@@ -115,16 +115,17 @@ export default function WeightCalibration({ days, profile, onWeightUpdate, onMar
       {/* Calibration Cards */}
       {currentDay && (
         <div className="space-y-3">
-          {currentDay.exercises.map(exercise => (
-            <CalibrationCard
-              key={exercise.id}
-              exercise={exercise}
-              dayId={currentDay.id}
-              onAutoEasy={handleCalibrateEasy}
-              onAutoHard={handleCalibrateHard}
-              onManualUpdate={handleManualWeight}
-              lang={lang}
-            />
+          {currentDay.exercises.map((exercise, index) => (
+            <div key={exercise.id} className="stagger-item" style={{ animationDelay: `${index * 0.06}s` }}>
+              <CalibrationCard
+                exercise={exercise}
+                dayId={currentDay.id}
+                onAutoEasy={handleCalibrateEasy}
+                onAutoHard={handleCalibrateHard}
+                onManualUpdate={handleManualWeight}
+                lang={lang}
+              />
+            </div>
           ))}
         </div>
       )}

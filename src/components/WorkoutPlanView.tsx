@@ -13,9 +13,10 @@ interface Props {
   onAssignEquipment: (dayId: string, exerciseId: string, equipmentId: string) => void;
   equipment: GymMachine[];
   lang: 'hu' | 'en';
+  isGenerating?: boolean;
 }
 
-export default function WorkoutPlanView({ days, planGenerated, profile, onGenerate, onMarkEasy, onMarkHard, onWeightUpdate, onAssignEquipment, equipment, lang }: Props) {
+export default function WorkoutPlanView({ days, planGenerated, profile, onGenerate, onMarkEasy, onMarkHard, onWeightUpdate, onAssignEquipment, equipment, lang, isGenerating }: Props) {
   const [expandedDay, setExpandedDay] = useState<string | null>(days[0]?.id || null);
   const [editingWeight, setEditingWeight] = useState<{ dayId: string; exerciseId: string } | null>(null);
   const [tempWeight, setTempWeight] = useState(0);
@@ -67,9 +68,19 @@ export default function WorkoutPlanView({ days, planGenerated, profile, onGenera
           </div>
           <button
             onClick={onGenerate}
-            className="w-full glass-blue text-blue-300 font-bold py-4 px-6 rounded-xl hover:bg-blue-500/20 transition-all transform hover:scale-[1.01] active:scale-[0.99] shadow-lg btn-press"
+            disabled={isGenerating}
+            className="w-full glass-blue text-blue-300 font-bold py-4 px-6 rounded-xl hover:bg-blue-500/20 transition-all transform hover:scale-[1.02] active:scale-[0.97] shadow-lg btn-press ripple-container disabled:opacity-50"
           >
-            {t('generatePlan', lang)}
+            {isGenerating ? (
+              <span className="flex items-center justify-center gap-2">
+                <svg className="w-5 h-5 animate-rotate" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                </svg>
+                {lang === 'hu' ? 'Generálás...' : 'Generating...'}
+              </span>
+            ) : (
+              t('generatePlan', lang)
+            )}
           </button>
         </div>
       </div>
@@ -87,15 +98,15 @@ export default function WorkoutPlanView({ days, planGenerated, profile, onGenera
           onClick={onGenerate}
           className="glass-subtle hover:bg-white/5 text-white/70 text-xs sm:text-sm font-medium py-2 px-3 sm:px-4 rounded-xl transition-all btn-press flex items-center gap-1.5"
         >
-          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <svg className="w-4 h-4 transition-transform duration-500" style={{ transform: 'rotate(0deg)' }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
           </svg>
           <span className="hidden sm:inline">{t('regenerate', lang)}</span>
         </button>
       </div>
 
-      {days.map(day => (
-        <div key={day.id} className="glass-strong rounded-2xl overflow-hidden">
+      {days.map((day, index) => (
+        <div key={day.id} className="glass-strong rounded-2xl overflow-hidden stagger-item hover-lift" style={{ animationDelay: `${index * 0.08}s` }}>
           {/* Day Header */}
           <button
             onClick={() => setExpandedDay(expandedDay === day.id ? null : day.id)}
@@ -119,13 +130,14 @@ export default function WorkoutPlanView({ days, planGenerated, profile, onGenera
 
           {/* Exercises */}
           {expandedDay === day.id && (
-            <div className="border-t border-white/5 p-3 sm:p-4 space-y-2 sm:space-y-3">
-              {day.exercises.map(exercise => {
+            <div className="border-t border-white/5 p-3 sm:p-4 space-y-2 sm:space-y-3 animate-fade-in">
+              {day.exercises.map((exercise, index) => {
                 const assignedMachine = equipment.find(e => e.id === exercise.assignedEquipment);
                 return (
                   <div
                     key={exercise.id}
-                    className="glass-subtle rounded-xl p-3 sm:p-4"
+                    className="glass-subtle rounded-xl p-3 sm:p-4 stagger-item spring-card"
+                    style={{ animationDelay: `${index * 0.05}s` }}
                   >
                     <div className="flex items-start justify-between gap-2 sm:gap-3">
                       <div className="flex-1 min-w-0">

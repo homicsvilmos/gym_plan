@@ -18,6 +18,7 @@ function App() {
   const [lang, setLang] = useState<'hu' | 'en'>('hu');
   const [showMenu, setShowMenu] = useState(false);
   const [showProfile, setShowProfile] = useState(false);
+  const [isRegenerating, setIsRegenerating] = useState(false);
 
   useEffect(() => {
     const saved = localStorage.getItem('gymProfile');
@@ -63,10 +64,14 @@ function App() {
 
   const handleGeneratePlan = () => {
     if (profile) {
-      const days = generateWorkoutPlan(profile);
-      setWorkoutDays(days);
-      setPlanGenerated(true);
-      localStorage.setItem('gymWorkoutPlan', JSON.stringify(days));
+      setIsRegenerating(true);
+      setTimeout(() => {
+        const days = generateWorkoutPlan(profile);
+        setWorkoutDays(days);
+        setPlanGenerated(true);
+        localStorage.setItem('gymWorkoutPlan', JSON.stringify(days));
+        setIsRegenerating(false);
+      }, 600);
     }
   };
 
@@ -210,9 +215,9 @@ function App() {
             <div className="relative">
               <button
                 onClick={() => { setShowMenu(!showMenu); setShowProfile(false); }}
-                className="w-10 h-10 rounded-xl glass flex items-center justify-center text-blue-400 hover:bg-blue-500/10 transition-all btn-press"
+                className="w-10 h-10 rounded-xl glass flex items-center justify-center text-blue-400 hover:bg-blue-500/10 transition-all btn-press hover:scale-110"
               >
-                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="w-5 h-5 transition-transform duration-300" style={{ transform: showMenu ? 'rotate(90deg)' : 'rotate(0deg)' }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
                 </svg>
               </button>
@@ -221,10 +226,10 @@ function App() {
               {showMenu && (
                 <>
                   <div className="fixed inset-0 z-40" onClick={() => setShowMenu(false)} />
-                  <div className="absolute top-12 left-0 rounded-2xl p-2 min-w-[200px] z-50 shadow-2xl" style={{ background: 'rgba(10, 10, 10, 0.9)', backdropFilter: 'blur(40px) saturate(200%)', WebkitBackdropFilter: 'blur(40px) saturate(200%)', border: '1px solid rgba(255,255,255,0.1)' }}>
+                  <div className="absolute top-12 left-0 rounded-2xl p-2 min-w-[200px] z-50 shadow-2xl animate-fade-in-down" style={{ background: 'rgba(10, 10, 10, 0.9)', backdropFilter: 'blur(40px) saturate(200%)', WebkitBackdropFilter: 'blur(40px) saturate(200%)', border: '1px solid rgba(255,255,255,0.1)' }}>
                     <button
                       onClick={() => { setMainView('workout'); setShowMenu(false); }}
-                      className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-left transition-all ${
+                      className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-left transition-all btn-press ${
                         mainView === 'workout' ? 'glass-blue text-blue-300' : 'text-white/70 hover:bg-white/5 hover:text-white'
                       }`}
                     >
@@ -269,9 +274,9 @@ function App() {
             <div className="relative">
               <button
                 onClick={() => { setShowProfile(!showProfile); setShowMenu(false); }}
-                className="w-10 h-10 rounded-xl glass flex items-center justify-center text-blue-400 hover:bg-blue-500/10 transition-all btn-press"
+                className="w-10 h-10 rounded-xl glass flex items-center justify-center text-blue-400 hover:bg-blue-500/10 transition-all btn-press hover:scale-110"
               >
-                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="w-5 h-5 transition-transform duration-300" style={{ transform: showProfile ? 'scale(1.1)' : 'scale(1)' }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                 </svg>
               </button>
@@ -280,7 +285,7 @@ function App() {
               {showProfile && (
                 <>
                   <div className="fixed inset-0 z-40" onClick={() => setShowProfile(false)} />
-                  <div className="absolute top-12 right-0 rounded-2xl p-4 min-w-[240px] z-50 shadow-2xl" style={{ background: 'rgba(10, 10, 10, 0.9)', backdropFilter: 'blur(40px) saturate(200%)', WebkitBackdropFilter: 'blur(40px) saturate(200%)', border: '1px solid rgba(255,255,255,0.1)' }}>
+                  <div className="absolute top-12 right-0 rounded-2xl p-4 min-w-[240px] z-50 shadow-2xl animate-fade-in-down" style={{ background: 'rgba(10, 10, 10, 0.9)', backdropFilter: 'blur(40px) saturate(200%)', WebkitBackdropFilter: 'blur(40px) saturate(200%)', border: '1px solid rgba(255,255,255,0.1)' }}>
                     {profile ? (
                       <>
                         <div className="text-center mb-3 pb-3 border-b border-white/10">
@@ -325,47 +330,50 @@ function App() {
 
         {/* Main Content */}
         <main className="flex-1 max-w-7xl mx-auto px-3 sm:px-4 py-4 sm:py-6 w-full safe-area-bottom">
-          {mainView === 'workout' && (
-            <WorkoutPlanView
-              days={workoutDays}
-              planGenerated={planGenerated}
-              profile={profile}
-              onGenerate={handleGeneratePlan}
-              onMarkEasy={handleMarkEasy}
-              onMarkHard={handleMarkHard}
-              onWeightUpdate={handleWeightUpdate}
-              onAssignEquipment={handleAssignEquipment}
-              equipment={equipment}
-              lang={lang}
-            />
-          )}
-          {mainView === 'equipment' && (
-            <EquipmentGallery
-              equipment={equipment}
-              onAdd={handleAddEquipment}
-              onRemove={handleRemoveEquipment}
-              onRename={handleRenameEquipment}
-              onResetName={handleResetEquipmentName}
-              lang={lang}
-            />
-          )}
-          {mainView === 'calibration' && (
-            <WeightCalibration
-              days={workoutDays}
-              profile={profile}
-              onWeightUpdate={handleWeightUpdate}
-              onMarkEasy={handleMarkEasy}
-              onMarkHard={handleMarkHard}
-              lang={lang}
-            />
-          )}
-          {mainView === 'profile' && (
-            <ProfileSetup
-              profile={profile}
-              onSave={handleProfileSave}
-              lang={lang}
-            />
-          )}
+          <div key={mainView} className="page-transition">
+            {mainView === 'workout' && (
+              <WorkoutPlanView
+                days={workoutDays}
+                planGenerated={planGenerated}
+                profile={profile}
+                onGenerate={handleGeneratePlan}
+                onMarkEasy={handleMarkEasy}
+                onMarkHard={handleMarkHard}
+                onWeightUpdate={handleWeightUpdate}
+                onAssignEquipment={handleAssignEquipment}
+                equipment={equipment}
+                lang={lang}
+                isGenerating={isRegenerating}
+              />
+            )}
+            {mainView === 'equipment' && (
+              <EquipmentGallery
+                equipment={equipment}
+                onAdd={handleAddEquipment}
+                onRemove={handleRemoveEquipment}
+                onRename={handleRenameEquipment}
+                onResetName={handleResetEquipmentName}
+                lang={lang}
+              />
+            )}
+            {mainView === 'calibration' && (
+              <WeightCalibration
+                days={workoutDays}
+                profile={profile}
+                onWeightUpdate={handleWeightUpdate}
+                onMarkEasy={handleMarkEasy}
+                onMarkHard={handleMarkHard}
+                lang={lang}
+              />
+            )}
+            {mainView === 'profile' && (
+              <ProfileSetup
+                profile={profile}
+                onSave={handleProfileSave}
+                lang={lang}
+              />
+            )}
+          </div>
         </main>
       </div>
     </div>
